@@ -1,0 +1,22 @@
+.app-bar {
+  width: 100%;
+  height: 80px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  position: fixed;
+  top: 0;
+
+  padding: 0 80px;
+
+  font-size: 32px;
+  font-weight: 700;
+
+  background-color: white;
+
+  color: var(--purple);
+
+  /* border-bottom: 1px solid var(--seasalt); */
+}

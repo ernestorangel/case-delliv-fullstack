@@ -1,0 +1,93 @@
+.delivery-person-list-wraper {
+  width: 20%;
+  height: calc(100vh - 80px);
+
+  border-right: 10px solid var(--purple);
+  overflow-y: hidden;
+
+  background-color: var(--purple);
+}
+
+.delivery-person-list {
+  height: 91%;
+
+  background-color: transparent;
+  color: white;
+
+  padding: 0 10px;
+
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.delivery-person-title {
+  padding: 25px 15px;
+
+  background-color: transparent;
+  color: white;
+
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.delivery-person-card {
+  width: 100%;
+
+  background-color: #f1f1f1;
+
+  color: black;
+
+  margin-bottom: 10px;
+
+  padding: 30px 15px;
+
+  display: flex;
+  flex-direction: row;
+
+  border-radius: 8px;
+
+  cursor: pointer;
+}
+
+.delivery-person-card:hover {
+  background-color: black;
+  color: white;
+}
+
+.delivery-person-picture {
+  background-color: white;
+  width: 80px;
+  height: 80px;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-picture {
+  background-color: transparent;
+}
+
+.delivery-person-info {
+  background-color: transparent;
+
+  margin-left: 20px;
+
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+.delivery-person-info-title {
+  background-color: transparent;
+
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.delivery-person-info-description {
+  background-color: transparent;
+}

@@ -1,0 +1,14 @@
+.inspector-wraper {
+  background-color: var(--cool-gray);
+  width: 50%;
+
+  padding: 70px 40px 0 40px;
+}
+
+.inspector {
+  height: calc(100vh - 220px);
+
+  border-radius: 8px;
+
+  background-color: #fafafa;
+}

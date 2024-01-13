@@ -1,0 +1,38 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+
+  border: 0px solid red;
+
+  background-color: var(--seasalt);
+
+  font-family: 'Lexend', sans-serif;
+}
+
+:root {
+  --purple: #800080ff;
+  --seasalt: #fafafaff;
+  --licorice: #261c15ff;
+  --cool-gray: #8e8dbeff;
+  --saffron: #e3b505ff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  padding: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--licorice);
+  width: 8px;
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--saffron);
+}

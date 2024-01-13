@@ -1,0 +1,87 @@
+.orders-list-wraper {
+  background-color: var(--seasalt);
+
+  width: 30%;
+
+  height: calc(100vh - 95px);
+
+  border-right: 10px solid var(--seasalt);
+}
+
+.orders-list-header {
+  padding: 15px;
+
+  width: 100%;
+
+  background-color: transparent;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.orders-list-title {
+  background-color: transparent;
+  color: black;
+
+  width: 100%;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.orders-add-button {
+  padding: 10px;
+
+  border-radius: 12px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+  background-color: var(--purple);
+  color: white;
+}
+
+.orders-add-button:hover {
+  background-color: var(--saffron);
+}
+
+.orders-add-button-icon {
+  margin-right: 10px;
+  background-color: transparent;
+  filter: invert(100%);
+}
+
+.orders-list {
+  background-color: transparent;
+
+  padding: 0 15px;
+
+  height: 90%;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.order-card {
+  width: 100%;
+
+  background-color: white;
+
+  color: black;
+
+  margin-bottom: 10px;
+
+  padding: 30px 25px;
+
+  display: flex;
+  flex-direction: row;
+
+  border-radius: 8px;
+}
