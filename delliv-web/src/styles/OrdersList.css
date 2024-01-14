@@ -5,7 +5,7 @@
 
   height: calc(100vh - 95px);
 
-  border-right: 10px solid var(--seasalt);
+  border-right: 8px solid var(--seasalt);
 }
 
 .orders-list-header {

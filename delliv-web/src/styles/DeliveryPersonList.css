@@ -2,7 +2,7 @@
   width: 20%;
   height: calc(100vh - 80px);
 
-  border-right: 10px solid var(--purple);
+  border-right: 8px solid var(--purple);
   overflow-y: hidden;
 
   background-color: var(--purple);

@@ -16,24 +16,38 @@ Após baixar o código localmente, para iniciar a aplicação como um todo, **é
 
 ## INICIANDO O PROJETO
 
-### Iniciando o Portal Web
-
-Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-web** e rodar o comando:
-
-`npm run dev`
-
-### Iniciando o Aplicativo Mobile
-
-Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-mobile** e rodar o comando:
-
-`npm run dev`
-
-### Iniciando o Backend
+### 1. Iniciando o Banco de Dados
 
 Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-api** e rodar o comando:
 
 `npm run dev`
 
+### 2. Iniciando o Backend
+
+Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-api** e rodar o comando:
+
+`npm run dev`
+
+### 3. Iniciando o Portal Web
+
+Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-web** e rodar o comando:
+
+`npm run dev`
+
+### 4. Iniciando o Aplicativo Mobile
+
+Para iniciar o portal acessado pelo estabelecimento através do navegador, é preciso navegar até o diretório **delliv-mobile** e rodar o comando:
+
+`npm run dev`
+
 ## EXPLICAÇÃO TÉCNICA
+
+Front-end: React com Vite
+
+Mobile: React Native com Expo Go
+
+Back-end: Node.js com Express e Socket.io
+
+Bando de Dados: MySQL
 
 ## OBSERVAÇÕES
