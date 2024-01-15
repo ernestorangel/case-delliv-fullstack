@@ -10,7 +10,6 @@ const db_config = {
 async function runQuery(sql_query) {
   try {
     const res = await executeQuery(sql_query);
-    console.log('res: ', res);
     return res;
   } catch (err) {
     return err;
