@@ -12,13 +12,20 @@
 
 :root {
   --purple: #800080ff;
+  --real-white: #ffffff;
+  --white: #fafafa;
   --seasalt: #fafafaff;
   --licorice: #261c15ff;
   --cool-gray: #8e8dbeff;
   --saffron: #e3b505ff;
+  --light-gray: #dadada;
+
+  --gray-2: #f8fafd;
+  --gray-3: #e7e8eb;
+  --gray-4: #e9eef6;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
 }
 
@@ -35,4 +42,4 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--saffron);
-}
+} */

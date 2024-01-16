@@ -3,7 +3,7 @@ import '../styles/AppBar.css';
 function AppBar() {
   return (
     <>
-      <div class="app-bar">delliv</div>
+      <div className="app-bar">delliv</div>
     </>
   );
 }

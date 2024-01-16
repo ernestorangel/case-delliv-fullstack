@@ -3,7 +3,9 @@ import '../styles/Inspector.css';
 function Inspector() {
   return (
     <>
-      <div class="inspector-wraper">{/* <div class="inspector"></div> */}</div>
+      <div className="inspector-wraper">
+        {/* <div class="inspector"></div> */}
+      </div>
     </>
   );
 }

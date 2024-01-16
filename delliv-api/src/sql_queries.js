@@ -36,8 +36,28 @@ function createDeliveryPerson(params) {
   return query;
 }
 
+function createStore(params) {
+  let query = `
+    INSERT 
+    INTO delliv_db.store 
+    (
+      name, 
+      username, 
+      password
+    ) 
+    VALUES 
+    (
+      \'${params.name}\', 
+      \'${params.username}\', 
+      \'${params.encryptedPassword}\'
+    );
+  `;
+  return query;
+}
+
 module.exports = {
   getAllDeliveryPeople,
   getDeliveryPerson,
   createDeliveryPerson,
+  createStore,
 };

@@ -2,62 +2,61 @@
   width: 20%;
   height: calc(100vh - 80px);
 
-  border-right: 8px solid var(--purple);
+  border-right: 1px solid var(--light-gray);
   overflow-y: hidden;
 
-  background-color: var(--purple);
+  background-color: var(--gray-2);
 }
 
 .delivery-person-list {
-  height: 91%;
+  height: calc(100vh - 131px);
 
   background-color: transparent;
   color: white;
-
-  padding: 0 10px;
 
   overflow-x: hidden;
   overflow-y: auto;
 }
 
 .delivery-person-title {
-  padding: 25px 15px;
+  padding: 15px 15px 16px 15px;
 
   background-color: transparent;
-  color: white;
+  color: var(--licorice);
+
+  border-bottom: 1px solid var(--light-gray);
 
   font-weight: 600;
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .delivery-person-card {
   width: 100%;
 
-  background-color: #f1f1f1;
-
-  color: black;
-
-  margin-bottom: 10px;
-
-  padding: 30px 15px;
+  padding: 25px 15px;
 
   display: flex;
   flex-direction: row;
 
-  border-radius: 8px;
-
   cursor: pointer;
+
+  background-color: transparent;
+  color: var(--licorice);
 }
 
 .delivery-person-card:hover {
-  background-color: black;
-  color: white;
+  background-color: var(--gray-3);
+}
+
+.card-selected {
+  background-color: var(--purple) !important;
+  color: var(--real-white);
 }
 
 .delivery-person-picture {
   background-color: white;
-  width: 80px;
-  height: 80px;
+  width: 50px;
+  height: 50px;
 
   border-radius: 50%;
 
@@ -79,13 +78,14 @@
   flex-direction: column;
 
   justify-content: center;
+  font-weight: 300;
 }
 
 .delivery-person-info-title {
   background-color: transparent;
 
-  font-size: 20px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 600;
 }
 
 .delivery-person-info-description {

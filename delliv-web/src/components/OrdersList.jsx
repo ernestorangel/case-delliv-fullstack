@@ -1,49 +1,74 @@
 import '../styles/OrdersList.css';
 
-function OrdersList() {
+function OrdersList({ selected }) {
+  if (!selected) {
+    return (
+      <>
+        <div className="orders-list-wraper">
+          <div className="orders-list-header">
+            <div className="orders-list-title">Pedidos</div>
+            <div className="orders-add-button">
+              <img
+                className="orders-add-button-icon"
+                src="src\assets\images\icons\mais.png"
+                width="20px"
+              ></img>
+              Novo Pedido
+            </div>
+          </div>
+          <div className="orders-list">
+            <div className="order-card">
+              Pedido #1234<br></br>3 itens
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
-      <div class="orders-list-wraper">
-        <div class="orders-list-header">
-          <div class="orders-list-title">Pedidos - Brenda Brandão</div>
-          <div class="orders-add-button">
+      <div className="orders-list-wraper">
+        <div className="orders-list-header">
+          <div className="orders-list-title">Pedidos com {selected.name}</div>
+          <div className="orders-add-button">
             <img
-              class="orders-add-button-icon"
+              className="orders-add-button-icon"
               src="src\assets\images\icons\mais.png"
               width="20px"
             ></img>
             Novo Pedido
           </div>
         </div>
-        <div class="orders-list">
-          <div class="order-card">
+        <div className="orders-list">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
-          <div class="order-card">
+          <div className="order-card">
             Pedido #1234<br></br>3 itens
           </div>
         </div>

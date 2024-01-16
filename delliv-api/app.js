@@ -18,6 +18,8 @@ app.get('/get-all-delivery-people', controller.getAllDeliveryPeople);
 app.get('/get-delivery-person/:id', controller.getDeliveryPerson);
 app.post('/create-delivery-person', controller.createDeliveryPerson);
 
+app.post('/create-store', controller.createStore);
+
 // io.on('connection', (socket) => {
 //   console.log('a user connected');
 // });
