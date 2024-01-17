@@ -1,8 +1,24 @@
+import React from 'react';
+
 import '../styles/ItemsList.css';
 import formatMoney from '../utils/format.js';
 
-function ItemsList({ items }) {
-  console.log(items);
+function ItemsList({ items, createOrder }) {
+  const [selectedItems, setSelectedItems] = React.useState({});
+
+  const addCount = (id, addBy) => {
+    let newSelected = { ...selectedItems };
+
+    if (newSelected[`${id}`]) newSelected[`${id}`] += addBy;
+    else newSelected[`${id}`] = addBy;
+
+    if (newSelected[`${id}`] <= 0) delete newSelected[`${id}`];
+
+    console.log(newSelected);
+
+    setSelectedItems(newSelected);
+  };
+
   return (
     <>
       <div className="items-list-wraper">
@@ -26,12 +42,34 @@ function ItemsList({ items }) {
                 </div>
               </div>
               <div className="item-card-info-actions">
-                <div className="actions-button">+</div>
-                <div className="actions-info">2</div>
-                <div className="actions-button">-</div>
+                <button
+                  className="actions-button"
+                  onClick={() => addCount(item.id, 1)}
+                >
+                  +
+                </button>
+                <div className="actions-info">
+                  {selectedItems[`${item.id}`]
+                    ? `${selectedItems[`${item.id}`]}`
+                    : '0'}
+                </div>
+                <button
+                  className="actions-button"
+                  onClick={() => addCount(item.id, -1)}
+                >
+                  -
+                </button>
               </div>
             </div>
           ))}
+        </div>
+        <div className="items-list-actions">
+          <button
+            className="create-order-button"
+            onClick={(e) => createOrder(e, selectedItems)}
+          >
+            CRIAR PEDIDO
+          </button>
         </div>
       </div>
     </>

@@ -31,8 +31,9 @@ app.get('/get-all-items', controller.getAllItems);
 // app.get('/get-item/:id', controller.getItem);
 app.post('/create-item', controller.createItem);
 
+app.get('/get-all-open-orders/:idStore', controller.getAllOpenOrders);
 // app.get('/get-order/:id', controller.getOrder);
-// app.post('/create-order', controller.createOrder);
+app.post('/create-order', controller.createOrder);
 
 // app.get('/get-route/:id', controller.getOrder);
 

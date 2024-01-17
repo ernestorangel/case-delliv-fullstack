@@ -1,6 +1,7 @@
 const sql = require('./sql_queries');
 const db = require('./db');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 
 async function getAllDeliveryPeople(req, res) {
   const sql_query = sql.getAllDeliveryPeople(req.params);
@@ -89,6 +90,33 @@ async function createItem(req, res) {
   res.send(result);
 }
 
+async function getAllOpenOrders(req, res) {
+  const sql_query = sql.getAllOpenOrders(req.params.idStore);
+  const result = await db.runQuery(sql_query);
+
+  res.send(result);
+}
+
+async function createOrder(req, res) {
+  const { idStore, items } = req.body;
+
+  const uuid = uuidv4();
+
+  let itemsArray = [];
+
+  for (const idItem in items) {
+    itemsArray.push({
+      id: idItem,
+      quantity: items[idItem],
+    });
+  }
+
+  const sql_query = sql.createOrder({ uuid, idStore, itemsArray });
+  const result = await db.runQuery(sql_query);
+
+  res.send(result);
+}
+
 module.exports = {
   getAllDeliveryPeople,
   getDeliveryPerson,
@@ -97,4 +125,6 @@ module.exports = {
   createStore,
   getAllItems,
   createItem,
+  getAllOpenOrders,
+  createOrder,
 };

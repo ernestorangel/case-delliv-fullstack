@@ -10,6 +10,7 @@ import '../styles/AppContent.css';
 
 function AppContent() {
   const [items, setItems] = React.useState([]);
+  const [openOrders, setOpenOrders] = React.useState([]);
   const [deliveryPeople, setDeliveryPeople] = React.useState([]);
   const [selected, setSelected] = React.useState({});
 
@@ -29,6 +30,17 @@ function AppContent() {
     setSelected(deliveryPerson);
   };
 
+  const createOrder = (e, selectedItems) => {
+    axios
+      .post('http://localhost:3000/create-order', {
+        idStore: 0,
+        items: selectedItems,
+      })
+      .then((res) => {
+        console.log('res: ', res.data);
+      });
+  };
+
   return (
     <>
       <div className="app-content">
@@ -39,7 +51,7 @@ function AppContent() {
         ></DeliveryPersonList>
         <OrdersList selected={selected}></OrdersList>
         <OpenOrdersList></OpenOrdersList>
-        <ItemsList items={items}></ItemsList>
+        <ItemsList items={items} createOrder={createOrder}></ItemsList>
       </div>
     </>
   );

@@ -96,6 +96,39 @@ function createItem(params) {
   return query;
 }
 
+function getAllOpenOrders(idStore) {
+  let query = `
+    SELECT
+    *
+    FROM delliv_db.order
+    WHERE idStore = ${idStore}
+  `;
+  return query;
+}
+
+function createOrder({ uuid, idStore, itemsArray }) {
+  let values = [];
+
+  for (const item of itemsArray) {
+    values.push(
+      `(\'${uuid}\',\'${item.id}\', \'${idStore}\', \'${item.quantity}\' )`
+    );
+  }
+
+  let query = `
+    INSERT INTO delliv_db.order
+    (
+      uuid,
+      idItem,
+      idStore,
+      quantity
+    ) 
+    VALUES
+    ${values.join(',')}
+  `;
+  return query;
+}
+
 module.exports = {
   getAllDeliveryPeople,
   getDeliveryPerson,
@@ -104,4 +137,6 @@ module.exports = {
   createStore,
   getAllItems,
   createItem,
+  getAllOpenOrders,
+  createOrder,
 };
