@@ -41,6 +41,13 @@ async function createDeliveryPerson(req, res) {
   //});
 }
 
+async function getStore(req, res) {
+  const sql_query = sql.getStore(req.params);
+  const result = await db.runQuery(sql_query);
+
+  res.send(result);
+}
+
 async function createStore(req, res) {
   const params = req.body;
 
@@ -58,9 +65,36 @@ async function createStore(req, res) {
   });
 }
 
+async function getAllItems(req, res) {
+  const sql_query = sql.getAllItems(req.params);
+  const result = await db.runQuery(sql_query);
+
+  res.send(result);
+}
+
+async function createItem(req, res) {
+  const params = req.body;
+
+  console.log(params);
+
+  const sql_query = sql.createItem({
+    sku: params.sku,
+    name: params.name,
+    price: params.price,
+    description: params.description,
+    idStore: params.idStore,
+  });
+  const result = await db.runQuery(sql_query);
+
+  res.send(result);
+}
+
 module.exports = {
   getAllDeliveryPeople,
   getDeliveryPerson,
   createDeliveryPerson,
+  getStore,
   createStore,
+  getAllItems,
+  createItem,
 };

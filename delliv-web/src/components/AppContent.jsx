@@ -1,19 +1,27 @@
 import axios from 'axios';
 import React from 'react';
 
-import '../styles/AppContent.css';
 import DeliveryPersonList from './DeliveryPersonList';
 import OrdersList from './OrdersList';
-import Inspector from './Inspector';
+import OpenOrdersList from './OpenOrdersList';
+import ItemsList from './ItemsList';
+
+import '../styles/AppContent.css';
 
 function AppContent() {
-  const [deliveryPeople, setDeliveryPeople] = React.useState();
-
-  const [selected, setSelected] = React.useState();
+  const [items, setItems] = React.useState([]);
+  const [deliveryPeople, setDeliveryPeople] = React.useState([]);
+  const [selected, setSelected] = React.useState({});
 
   React.useEffect(() => {
     axios.get('http://localhost:3000/get-all-delivery-people').then((res) => {
       setDeliveryPeople(res.data);
+    });
+  }, []);
+
+  React.useEffect(() => {
+    axios.get('http://localhost:3000/get-all-items').then((res) => {
+      setItems(res.data);
     });
   }, []);
 
@@ -30,7 +38,8 @@ function AppContent() {
           selected={selected}
         ></DeliveryPersonList>
         <OrdersList selected={selected}></OrdersList>
-        <Inspector></Inspector>
+        <OpenOrdersList></OpenOrdersList>
+        <ItemsList items={items}></ItemsList>
       </div>
     </>
   );

@@ -1,5 +1,5 @@
 .delivery-person-list-wraper {
-  width: 20%;
+  width: 480px;
   height: calc(100vh - 80px);
 
   border-right: 1px solid var(--light-gray);
@@ -19,14 +19,14 @@
 }
 
 .delivery-person-title {
-  padding: 15px 15px 16px 15px;
+  padding: 15px;
 
   background-color: transparent;
   color: var(--licorice);
 
-  border-bottom: 1px solid var(--light-gray);
+  /* border-bottom: 1px solid var(--light-gray); */
 
-  font-weight: 600;
+  font-weight: 300;
   font-size: 15px;
 }
 

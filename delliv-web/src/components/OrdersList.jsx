@@ -7,14 +7,14 @@ function OrdersList({ selected }) {
         <div className="orders-list-wraper">
           <div className="orders-list-header">
             <div className="orders-list-title">Pedidos</div>
-            <div className="orders-add-button">
+            {/* <div className="orders-add-button">
               <img
                 className="orders-add-button-icon"
                 src="src\assets\images\icons\mais.png"
                 width="20px"
               ></img>
               Novo Pedido
-            </div>
+            </div> */}
           </div>
           <div className="orders-list">
             <div className="order-card">
@@ -31,14 +31,14 @@ function OrdersList({ selected }) {
       <div className="orders-list-wraper">
         <div className="orders-list-header">
           <div className="orders-list-title">Pedidos com {selected.name}</div>
-          <div className="orders-add-button">
+          {/* <div className="orders-add-button">
             <img
               className="orders-add-button-icon"
               src="src\assets\images\icons\mais.png"
               width="20px"
             ></img>
             Novo Pedido
-          </div>
+          </div> */}
         </div>
         <div className="orders-list">
           <div className="order-card">

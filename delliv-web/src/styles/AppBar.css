@@ -20,3 +20,43 @@
 
   border-bottom: 1px solid var(--light-gray);
 }
+
+.app-bar-logo {
+  background-color: var(--gray-2);
+}
+
+.app-bar-profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  position: fixed;
+  right: 80px;
+
+  font-size: 20px;
+  color: var(--licorice);
+
+  background-color: transparent;
+}
+
+.app-bar-profile-name {
+  background-color: transparent;
+}
+
+.app-bar-profile-pic {
+  background-color: white;
+  width: 45px;
+  height: 45px;
+
+  border-radius: 50%;
+
+  margin-left: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.app-bar-profile-img {
+  background-color: white;
+}

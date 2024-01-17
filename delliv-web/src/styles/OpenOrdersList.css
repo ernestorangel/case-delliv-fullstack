@@ -1,0 +1,48 @@
+.inspector-wraper {
+  width: 480px;
+
+  background-color: var(--real-white);
+
+  border-right: 1px solid var(--light-gray);
+}
+
+.inspector-header {
+  background-color: transparent;
+  font-size: 15px;
+  padding: 15px;
+
+  display: flex;
+
+  /* border-bottom: 1px solid var(--light-gray); */
+}
+
+.inspector-header-title {
+  background-color: transparent;
+  color: black;
+
+  width: 100%;
+  font-weight: 300;
+  font-size: 15px;
+}
+
+.orders-add-button {
+  padding: 15px;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: flex-end;
+
+  font-weight: 600;
+  font-size: 15px;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+  background-color: var(--purple);
+  color: white;
+}
+
+.orders-add-button:hover {
+  background-color: var(--saffron);
+}
