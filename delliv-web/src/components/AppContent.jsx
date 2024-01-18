@@ -26,6 +26,12 @@ function AppContent() {
     });
   }, []);
 
+  React.useEffect(() => {
+    axios.get('http://localhost:3000/get-all-open-orders/0').then((res) => {
+      setOpenOrders(res.data);
+    });
+  }, []);
+
   const setSelectDeliveryPerson = (e, deliveryPerson) => {
     setSelected(deliveryPerson);
   };
@@ -37,7 +43,8 @@ function AppContent() {
         items: selectedItems,
       })
       .then((res) => {
-        console.log('res: ', res.data);
+        console.log('res create', res.data);
+        setOpenOrders(res.data);
       });
   };
 
@@ -50,7 +57,7 @@ function AppContent() {
           selected={selected}
         ></DeliveryPersonList>
         <OrdersList selected={selected}></OrdersList>
-        <OpenOrdersList></OpenOrdersList>
+        <OpenOrdersList openOrders={openOrders}></OpenOrdersList>
         <ItemsList items={items} createOrder={createOrder}></ItemsList>
       </div>
     </>

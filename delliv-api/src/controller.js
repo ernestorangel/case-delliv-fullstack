@@ -1,5 +1,6 @@
 const sql = require('./sql_queries');
 const db = require('./db');
+const helper = require('./helper');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
@@ -92,7 +93,7 @@ async function createItem(req, res) {
 
 async function getAllOpenOrders(req, res) {
   const sql_query = sql.getAllOpenOrders(req.params.idStore);
-  const result = await db.runQuery(sql_query);
+  const result = helper.groupOrders(await db.runQuery(sql_query));
 
   res.send(result);
 }
@@ -111,10 +112,15 @@ async function createOrder(req, res) {
     });
   }
 
-  const sql_query = sql.createOrder({ uuid, idStore, itemsArray });
-  const result = await db.runQuery(sql_query);
+  const sql_query_1 = sql.createOrder(uuid, idStore, itemsArray);
+  const result_1 = await db.runQuery(sql_query_1);
 
-  res.send(result);
+  console.log(result_1);
+
+  const sql_query_2 = sql.getAllOpenOrders(idStore);
+  const result_2 = helper.groupOrders(await db.runQuery(sql_query_2));
+
+  res.send(result_2);
 }
 
 module.exports = {

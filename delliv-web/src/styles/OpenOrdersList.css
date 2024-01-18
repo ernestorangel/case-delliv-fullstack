@@ -1,4 +1,4 @@
-.inspector-wraper {
+.open-orders-list-wraper {
   width: 480px;
 
   background-color: var(--real-white);
@@ -6,7 +6,7 @@
   border-right: 1px solid var(--light-gray);
 }
 
-.inspector-header {
+.open-orders-list-header {
   background-color: transparent;
   font-size: 15px;
   padding: 15px;
@@ -16,7 +16,7 @@
   /* border-bottom: 1px solid var(--light-gray); */
 }
 
-.inspector-header-title {
+.open-orders-list-header-title {
   background-color: transparent;
   color: black;
 
@@ -25,24 +25,26 @@
   font-size: 15px;
 }
 
-.orders-add-button {
-  padding: 15px;
+.open-orders-list {
+  background-color: transparent;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-end;
-
-  font-weight: 600;
-  font-size: 15px;
-
-  cursor: pointer;
-
-  white-space: nowrap;
-  background-color: var(--purple);
-  color: white;
+  padding: 0 10px;
 }
 
-.orders-add-button:hover {
-  background-color: var(--saffron);
+.open-orders-card {
+  padding: 20px;
+  margin-bottom: 10px;
+
+  border: 1px solid var(--light-gray);
+}
+
+.open-orders-card-header {
+  font-size: 15px;
+  font-weight: 300;
+  margin-bottom: 10px;
+}
+
+.open-orders-card-content-info {
+  font-size: 18px;
+  font-weight: 400;
 }

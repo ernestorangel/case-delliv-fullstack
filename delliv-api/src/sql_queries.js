@@ -98,15 +98,21 @@ function createItem(params) {
 
 function getAllOpenOrders(idStore) {
   let query = `
-    SELECT
-    *
-    FROM delliv_db.order
-    WHERE idStore = ${idStore}
+    SELECT 
+    o.uuid,
+    o.idItem,
+    o.quantity,
+    i.sku,
+    i.name
+    FROM delliv_db.order AS o
+    LEFT JOIN delliv_db.item AS i
+    ON o.idItem = i.id
+    WHERE o.idStore = ${idStore}
   `;
   return query;
 }
 
-function createOrder({ uuid, idStore, itemsArray }) {
+function createOrder(uuid, idStore, itemsArray) {
   let values = [];
 
   for (const item of itemsArray) {
