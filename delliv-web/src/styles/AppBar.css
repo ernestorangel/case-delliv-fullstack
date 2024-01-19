@@ -14,15 +14,14 @@
   font-size: 32px;
   font-weight: 700;
 
-  background-color: var(--gray-2);
-
-  color: var(--purple);
-
-  border-bottom: 1px solid var(--light-gray);
+  background-color: var(--foreground-color);
+  color: var(--font-color);
+  border-bottom: var(--border);
 }
 
 .app-bar-logo {
-  background-color: var(--gray-2);
+  background-color: transparent;
+  color: var(--highlight-color);
 }
 
 .app-bar-profile {
@@ -34,7 +33,6 @@
   right: 80px;
 
   font-size: 20px;
-  color: var(--licorice);
 
   background-color: transparent;
 }

@@ -14,6 +14,8 @@ function AppContent() {
   const [deliveryPeople, setDeliveryPeople] = React.useState([]);
   const [selected, setSelected] = React.useState({});
 
+  const idStore = 0;
+
   React.useEffect(() => {
     axios.get('http://localhost:3000/get-all-delivery-people').then((res) => {
       setDeliveryPeople(res.data);
@@ -27,9 +29,11 @@ function AppContent() {
   }, []);
 
   React.useEffect(() => {
-    axios.get('http://localhost:3000/get-all-open-orders/0').then((res) => {
-      setOpenOrders(res.data);
-    });
+    axios
+      .get(`http://localhost:3000/get-all-open-orders/${idStore}`)
+      .then((res) => {
+        setOpenOrders(res.data);
+      });
   }, []);
 
   const setSelectDeliveryPerson = (e, deliveryPerson) => {
@@ -39,11 +43,18 @@ function AppContent() {
   const createOrder = (e, selectedItems) => {
     axios
       .post('http://localhost:3000/create-order', {
-        idStore: 0,
+        idStore: idStore,
         items: selectedItems,
       })
       .then((res) => {
-        console.log('res create', res.data);
+        setOpenOrders(res.data);
+      });
+  };
+
+  const deleteOrder = (e, uuid) => {
+    axios
+      .delete(`http://localhost:3000/delete-order/${idStore}/${uuid}`)
+      .then((res) => {
         setOpenOrders(res.data);
       });
   };
@@ -57,7 +68,11 @@ function AppContent() {
           selected={selected}
         ></DeliveryPersonList>
         <OrdersList selected={selected}></OrdersList>
-        <OpenOrdersList openOrders={openOrders}></OpenOrdersList>
+        <OpenOrdersList
+          openOrders={openOrders}
+          selected={selected}
+          deleteOrder={deleteOrder}
+        ></OpenOrdersList>
         <ItemsList items={items} createOrder={createOrder}></ItemsList>
       </div>
     </>

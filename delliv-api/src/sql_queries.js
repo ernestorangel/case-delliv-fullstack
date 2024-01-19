@@ -135,6 +135,15 @@ function createOrder(uuid, idStore, itemsArray) {
   return query;
 }
 
+function deleteOrder({ idStore, uuid }) {
+  let query = `
+    DELETE FROM delliv_db.order
+    WHERE idStore = ${idStore}
+    AND uuid = \'${uuid}\'
+  `;
+  return query;
+}
+
 module.exports = {
   getAllDeliveryPeople,
   getDeliveryPerson,
@@ -145,4 +154,5 @@ module.exports = {
   createItem,
   getAllOpenOrders,
   createOrder,
+  deleteOrder,
 };

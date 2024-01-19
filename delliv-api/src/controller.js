@@ -115,9 +115,21 @@ async function createOrder(req, res) {
   const sql_query_1 = sql.createOrder(uuid, idStore, itemsArray);
   const result_1 = await db.runQuery(sql_query_1);
 
-  console.log(result_1);
+  console.log(result_1); // implementar checagem
 
   const sql_query_2 = sql.getAllOpenOrders(idStore);
+  const result_2 = helper.groupOrders(await db.runQuery(sql_query_2));
+
+  res.send(result_2);
+}
+
+async function deleteOrder(req, res) {
+  const sql_query = sql.deleteOrder(req.params);
+  const result = await db.runQuery(sql_query);
+
+  console.log(result); // implementar checagem
+
+  const sql_query_2 = sql.getAllOpenOrders(req.params.idStore);
   const result_2 = helper.groupOrders(await db.runQuery(sql_query_2));
 
   res.send(result_2);
@@ -133,4 +145,5 @@ module.exports = {
   createItem,
   getAllOpenOrders,
   createOrder,
+  deleteOrder,
 };

@@ -1,68 +1,42 @@
 .orders-list-wraper {
   width: 480px;
-
-  background-color: var(--real-white);
-
   height: calc(100vh - 80px);
 
-  border-right: 1px solid var(--light-gray);
+  background-color: var(--background-color);
+  color: var(--font-color);
+  border-right: var(--border);
 }
 
 .orders-list-header {
-  padding: 15px;
-
-  width: 100%;
-
   background-color: transparent;
 
-  /* border-bottom: 1px solid var(--light-gray); */
+  width: 100%;
 
   display: flex;
   flex-direction: row;
   align-items: center;
+
+  padding: 15px;
+
+  border-bottom: var(--border);
 }
 
 .orders-list-title {
   background-color: transparent;
-  color: black;
 
   width: 100%;
-  font-weight: 300;
-  font-size: 15px;
-}
 
-.orders-add-button {
-  padding: 15px;
+  font-weight: var(--font-regular);
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  align-self: flex-end;
-
-  font-weight: 600;
-  font-size: 15px;
-
-  cursor: pointer;
-
-  white-space: nowrap;
-  background-color: var(--purple);
-  color: white;
-}
-
-.orders-add-button:hover {
-  background-color: var(--saffron);
-}
-
-.orders-add-button-icon {
-  margin-right: 10px;
-  background-color: transparent;
-  filter: invert(100%);
+  font-size: var(--font-medium);
 }
 
 .orders-list {
   background-color: transparent;
 
   height: calc(100vh - 131px);
+
+  padding: 10px 10px 0;
 
   overflow-y: auto;
   overflow-x: hidden;
@@ -71,13 +45,15 @@
 .order-card {
   width: 100%;
 
-  background-color: transparent;
-
-  color: black;
+  background-color: var(--foreground-color);
 
   padding: 25px 25px;
 
-  border-bottom: 1px solid var(--light-gray);
+  margin-bottom: 10px;
+
+  border: var(--border);
+
+  border-radius: var(--card-border-radius);
 
   display: flex;
   flex-direction: row;

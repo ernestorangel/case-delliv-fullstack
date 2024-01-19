@@ -29,9 +29,8 @@ function ItemsList({ items, createOrder }) {
               <div className="item-card-img">
                 <img
                   src={`src\\assets\\images\\products\\${item.sku}.jpg`}
-                  alt="Product Picture"
-                  width="120"
-                  height="120"
+                  alt={item.description}
+                  width="100%"
                 />
               </div>
               <div className="item-card-info">
@@ -66,7 +65,10 @@ function ItemsList({ items, createOrder }) {
         <div className="items-list-actions">
           <button
             className="create-order-button"
-            onClick={(e) => createOrder(e, selectedItems)}
+            onClick={(e) => {
+              setSelectedItems({});
+              createOrder(e, selectedItems);
+            }}
           >
             CRIAR PEDIDO
           </button>

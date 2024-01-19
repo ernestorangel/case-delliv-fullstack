@@ -1,5 +1,6 @@
 import axios from 'axios';
 import React from 'react';
+import { io } from 'socket.io-client';
 
 import './styles/App.css';
 import AppBar from './components/AppBar';
@@ -9,6 +10,10 @@ import Login from './components/Login';
 function App() {
   const [logged, setlogged] = React.useState(false);
   const [store, setStore] = React.useState();
+
+  const socket = io('http://localhost:3000', {
+    transports: ['websocket'],
+  });
 
   React.useEffect(() => {
     if (logged)

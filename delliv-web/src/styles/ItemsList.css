@@ -1,36 +1,53 @@
 .items-list-wraper {
   width: 480px;
   height: calc(100vh - 80px);
+
+  background-color: var(--background-color);
+  color: var(--font-color);
+
   overflow-y: hidden;
 }
 
 .items-list-header {
   padding: 15px;
+
+  border-bottom: var(--border);
 }
 
 .items-list {
-  height: calc(100vh - 131px);
+  height: calc(100vh - 220px);
 
-  padding: 0 10px;
+  padding: 10px 10px 0;
+
+  overflow-y: auto;
 }
 
 .item-card {
-  background-color: white;
-
-  height: 120px;
-
   display: flex;
 
-  padding: 0 0;
-
+  padding: 10px;
   margin: 0 0 10px 0;
 
-  border: 1px solid var(--light-gray);
+  background-color: var(--foreground-color);
+  border: var(--border);
+  border-radius: var(--card-border-radius);
 }
 
 .item-card-img {
-  background-color: transparent;
+  width: 120px;
+  height: 120px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  background-color: white;
   overflow: hidden;
+
+  border: var(--border);
+  border-radius: var(--card-inner-border-radius);
 }
 
 .item-card-info {
@@ -39,8 +56,6 @@
   flex-direction: column;
 
   background-color: transparent;
-
-  border-left: 1px solid var(--light-gray);
 }
 
 .item-card-info-name {
@@ -51,29 +66,29 @@
 
 .item-card-info-desc {
   background-color: transparent;
+
+  height: 100%;
   padding: 0 10px;
 
-  font-weight: 300;
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semi-light);
 }
 
 .item-card-info-price {
   background-color: transparent;
   padding: 10px;
   font-weight: 600;
-  color: darkgreen;
+  color: green;
 }
 
 .item-card-info-actions {
   width: 80px;
-
-  border-left: 1px solid var(--light-gray);
   background-color: transparent;
 }
 
 .actions-button {
   width: 79px;
   height: 39px;
-  background-color: var(--gray-2);
 
   display: flex;
   flex-direction: row;
@@ -83,48 +98,60 @@
   font-size: 20px;
   font-weight: 300;
 
+  background-color: var(--foreground-color);
+  color: var(--font-color);
+
+  border-radius: var(--card-inner-border-radius);
+
   cursor: pointer;
 }
 
 .actions-button:hover {
-  background-color: var(--purple);
+  background-color: var(--highlight-color);
   color: var(--real-white);
 }
 
 .actions-info {
   height: 40px;
 
-  background-color: transparent;
-
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
 
-  font-size: 20px;
-  font-weight: 800;
+  margin: 5px 0;
 
-  border-top: 1px solid var(--light-gray);
-  border-bottom: 1px solid var(--light-gray);
+  font-size: var(--fs-large);
+  font-weight: var(--fw-regular);
+
+  background-color: var(--background-color);
+  border: var(--border);
+  border-radius: var(--card-inner-border-radius);
 }
 
 .items-list-actions {
-  width: 300px;
-  height: 100px;
-  background-color: red;
-
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
+  width: 480px;
+  height: 90px;
 
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+
+  border-top: 1px solid var(--light-gray);
 }
 
 .create-order-button {
   padding: 20px;
   background-color: var(--gray-2);
   font-size: 20px;
+
+  border: 1px solid var(--light-gray);
+
+  cursor: pointer;
+}
+
+.create-order-button:hover {
+  background-color: var(--highlight-color);
+  color: var(--real-white);
 }

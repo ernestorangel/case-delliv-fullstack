@@ -2,17 +2,17 @@
   width: 480px;
   height: calc(100vh - 80px);
 
-  border-right: 1px solid var(--light-gray);
+  border-right: var(--border);
   overflow-y: hidden;
 
-  background-color: var(--gray-2);
+  background-color: var(--background-color);
+  color: var(--font-color);
 }
 
 .delivery-person-list {
   height: calc(100vh - 131px);
 
   background-color: transparent;
-  color: white;
 
   overflow-x: hidden;
   overflow-y: auto;
@@ -22,9 +22,8 @@
   padding: 15px;
 
   background-color: transparent;
-  color: var(--licorice);
 
-  /* border-bottom: 1px solid var(--light-gray); */
+  border-bottom: var(--border);
 
   font-weight: 300;
   font-size: 15px;
@@ -41,24 +40,23 @@
   cursor: pointer;
 
   background-color: transparent;
-  color: var(--licorice);
 }
 
 .delivery-person-card:hover {
-  background-color: var(--gray-3);
+  background-color: var(--foreground-color);
 }
 
 .card-selected {
-  background-color: var(--purple) !important;
+  background-color: var(--highlight-color) !important;
   color: var(--real-white);
 }
 
 .delivery-person-picture {
-  background-color: white;
+  background-color: var(--foreground-color);
   width: 50px;
   height: 50px;
 
-  border-radius: 50%;
+  border-radius: 25px;
 
   display: flex;
   justify-content: center;

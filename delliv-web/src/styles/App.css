@@ -1,45 +1,77 @@
+:root {
+  /* typography */
+  --ff-primary: 'Lexend', sans-serif;
+
+  --fs-large: 20px;
+  --fs-medium: 15px;
+  --fs-small: 12px;
+
+  --fw-bold: 800;
+  --fw-semi-bold: 600;
+  --fw-regular: 400;
+  --fw-semi-light: 200;
+  --fw-light: 100;
+
+  /* dark mode */
+  --dark-background-color: rgb(24, 24, 24);
+  --dark-foreground-color: rgba(33, 33, 33, 255);
+
+  --dark-highlight-color: #800080ff;
+
+  --dark-border-color: rgba(63, 63, 63, 255);
+  --dark-border: 1px solid var(--dark-border-color);
+
+  --dark-font-color: white;
+
+  --dark-button-color: green;
+  --dark-button-color-hover: var(--purple);
+
+  /* light mode */
+  --light-background-color: #fafafa;
+  --light-foreground-color: #f8fafd;
+
+  --light-highlight-color: #800080ff;
+
+  --light-border-color: lightgray;
+  --light-border: 1px solid var(--light-border-color);
+
+  --light-font-color: black;
+
+  --light-button-color: red;
+  --light-button-color-hover: var(--purple);
+
+  /* shaping and spacing */
+  --card-border-radius: 8px;
+  --card-inner-border-radius: 5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: var(--dark-background-color);
+    --foreground-color: var(--dark-foreground-color);
+    --border: var(--dark-border);
+    --font-color: var(--dark-font-color);
+    --highlight-color: var(--dark-highlight-color);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-color: var(--light-background-color);
+    --foreground-color: var(--light-foreground-color);
+    --border: var(--light-border);
+    --font-color: var(--light-font-color);
+    --highlight-color: var(--light-highlight-color);
+  }
+}
+
 * {
   margin: 0;
   padding: 0;
+  border: 0;
+
   box-sizing: border-box;
 
-  border: 0px solid red;
-
-  background-color: var(--seasalt);
-
-  font-family: 'Lexend', sans-serif;
+  background-color: var(--background-color);
+  font-family: var(--ff-primary);
 }
-
-:root {
-  --purple: #800080ff;
-  --real-white: #ffffff;
-  --white: #fafafa;
-  --seasalt: #fafafaff;
-  --licorice: #261c15ff;
-  --cool-gray: #8e8dbeff;
-  --saffron: #e3b505ff;
-  --light-gray: #dadada;
-
-  --gray-2: #f8fafd;
-  --gray-3: #e7e8eb;
-  --gray-4: #e9eef6;
-}
-
-/* ::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-  padding: 5px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--licorice);
-  width: 8px;
-  border-radius: 20px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--saffron);
-} */
