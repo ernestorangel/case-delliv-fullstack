@@ -17,7 +17,13 @@ function DeliveryPersonList({ deliveryPeople, onSelect, selected }) {
   return (
     <>
       <div className="delivery-person-list-wraper">
-        <div className="delivery-person-title">Entregadores</div>
+        <div className="delivery-person-list-header">
+          <div className="delivery-person-title">Entregadores</div>
+          <button className="delivery-person-header-button">
+            Solicitar entregador
+          </button>
+        </div>
+
         <div className="delivery-person-list">
           {deliveryPeople.map((deliveryPerson) => (
             <div

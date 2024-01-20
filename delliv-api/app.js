@@ -13,8 +13,6 @@ const io = new Server(server, {
   },
 });
 
-const port = 3000;
-
 app.use(express.json());
 app.use(cors());
 
@@ -33,9 +31,13 @@ app.post('/create-order', controller.createOrder);
 app.delete('/delete-order/:idStore/:uuid', controller.deleteOrder);
 
 io.on('connection', (socket) => {
-  console.log(`a user connected at ${socket.id}`);
+  console.log(`a user connected at socket ${socket.id}`);
 });
 
-server.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+app.listen(3000, () => {
+  console.log(`Endpoints exposed at http://localhost:3000`);
+});
+
+server.listen(3030, () => {
+  console.log(`Sockets running at http://localhost:3030`);
 });

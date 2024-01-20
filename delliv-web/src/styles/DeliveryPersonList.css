@@ -18,8 +18,11 @@
   overflow-y: auto;
 }
 
-.delivery-person-title {
-  padding: 15px;
+.delivery-person-list-header {
+  padding: 0 0 0 15px;
+
+  display: flex;
+  align-items: center;
 
   background-color: transparent;
 
@@ -27,6 +30,21 @@
 
   font-weight: 300;
   font-size: 15px;
+}
+
+.delivery-person-title {
+  width: 100%;
+  color: white;
+}
+
+.delivery-person-header-button {
+  padding: 15px;
+  color: white;
+  background-color: purple;
+
+  white-space: nowrap;
+
+  cursor: pointer;
 }
 
 .delivery-person-card {

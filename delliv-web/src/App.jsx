@@ -11,15 +11,16 @@ function App() {
   const [logged, setlogged] = React.useState(false);
   const [store, setStore] = React.useState();
 
-  const socket = io('http://localhost:3000', {
-    transports: ['websocket'],
-  });
-
   React.useEffect(() => {
-    if (logged)
+    if (logged) {
       axios.get('http://localhost:3000/get-store/0').then((res) => {
         setStore(res.data[0]);
       });
+
+      const socket = io('http://localhost:3030', {
+        transports: ['websocket'],
+      });
+    }
   }, [logged]);
 
   if (!logged) {
