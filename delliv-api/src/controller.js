@@ -4,6 +4,29 @@ const helper = require('./helper');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
+async function login(req, res) {
+  const { username, password } = req.body;
+
+  const sql_query = sql.getStoreByUsername(username);
+  const rows = await db.runQuery(sql_query);
+  const store = rows[0];
+
+  console.log(store);
+
+  if (!store) return res.status(404).send('Usuário não encontrado');
+
+  bcrypt.compare(password, store.password, (err, result) => {
+    if (!err) {
+      if (result) res.status(200).send({ id: store.id, name: store.name });
+      else res.status(403).send('Senha incorreta');
+    } else {
+      res.status(500).send('Erro no servidor. Tente novamente mais tarde.');
+    }
+  });
+
+  return;
+}
+
 async function getAllDeliveryPeople(req, res) {
   const sql_query = sql.getAllDeliveryPeople(req.params);
   const result = await db.runQuery(sql_query);
@@ -136,6 +159,7 @@ async function deleteOrder(req, res) {
 }
 
 module.exports = {
+  login,
   getAllDeliveryPeople,
   getDeliveryPerson,
   createDeliveryPerson,

@@ -40,11 +40,18 @@
 .delivery-person-header-button {
   padding: 15px;
   color: white;
+  font-size: 15px;
+  font-weight: 300;
+  padding: 15px;
   background-color: purple;
 
   white-space: nowrap;
 
   cursor: pointer;
+}
+
+.delivery-person-header-button:hover {
+  background-color: var(--foreground-color);
 }
 
 .delivery-person-card {

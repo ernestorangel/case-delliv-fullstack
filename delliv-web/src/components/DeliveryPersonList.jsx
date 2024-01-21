@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../styles/DeliveryPersonList.css';
 
-function DeliveryPersonList({ deliveryPeople, onSelect, selected }) {
+function DeliveryPersonList({ onRequest, deliveryPeople, onSelect, selected }) {
   if (!deliveryPeople) {
     return (
       <>
@@ -19,7 +19,10 @@ function DeliveryPersonList({ deliveryPeople, onSelect, selected }) {
       <div className="delivery-person-list-wraper">
         <div className="delivery-person-list-header">
           <div className="delivery-person-title">Entregadores</div>
-          <button className="delivery-person-header-button">
+          <button
+            className="delivery-person-header-button"
+            onClick={(e) => onRequest(e)}
+          >
             Solicitar entregador
           </button>
         </div>

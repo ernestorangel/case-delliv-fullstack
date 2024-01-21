@@ -6,39 +6,67 @@ import './styles/App.css';
 import AppBar from './components/AppBar';
 import AppContent from './components/AppContent';
 import Login from './components/Login';
+import Toast from './components/Toast';
 
 function App() {
-  const [logged, setlogged] = React.useState(false);
+  const [toastType, setToastType] = React.useState();
+  const [toastMessage, setToastMessage] = React.useState();
   const [store, setStore] = React.useState();
+  const [socket, setSocket] = React.useState();
 
   React.useEffect(() => {
-    if (logged) {
-      axios.get('http://localhost:3000/get-store/0').then((res) => {
-        setStore(res.data[0]);
-      });
-
+    if (store) {
       const socket = io('http://localhost:3030', {
         transports: ['websocket'],
       });
+      setSocket(socket);
     }
-  }, [logged]);
+  }, [store]);
 
-  if (!logged) {
-    const login = (e, loginValue) => {
-      setlogged(loginValue);
+  const requestDeliveryPerson = () => {
+    socket.emit('request-delivery-person', store.id, 'store');
+  };
+
+  const showToast = (type, message) => {
+    setToastType(type);
+    setToastMessage(message);
+  };
+
+  const clearToast = () => {
+    setToastType(undefined);
+    setToastMessage(undefined);
+  };
+
+  if (!store) {
+    const onLogin = async (e, typedCredentials) => {
+      e.preventDefault();
+      await axios
+        .post(`http://localhost:3000/login`, typedCredentials)
+        .then((res) => {
+          setStore(res.data);
+        })
+        .catch((err) => {
+          showToast('error', err.response.data);
+        });
     };
 
     return (
       <>
-        <Login onLogin={login}></Login>
+        <Toast
+          type={toastType}
+          message={toastMessage}
+          clear={clearToast}
+        ></Toast>
+        <Login onLogin={onLogin}></Login>
       </>
     );
   }
 
   return (
     <>
+      <Toast type={toastType} message={toastMessage}></Toast>
       <AppBar store={store}></AppBar>
-      <AppContent></AppContent>
+      <AppContent store={store} onRequest={requestDeliveryPerson}></AppContent>
     </>
   );
 }

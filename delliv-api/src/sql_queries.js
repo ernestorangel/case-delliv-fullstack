@@ -1,3 +1,12 @@
+function getStoreByUsername(username) {
+  let query = `
+    SELECT *
+    FROM delliv_db.store
+    WHERE username = '${username}'
+  `;
+  return query;
+}
+
 function getAllDeliveryPeople(params) {
   let query = `
     SELECT
@@ -145,6 +154,7 @@ function deleteOrder({ idStore, uuid }) {
 }
 
 module.exports = {
+  getStoreByUsername,
   getAllDeliveryPeople,
   getDeliveryPerson,
   createDeliveryPerson,

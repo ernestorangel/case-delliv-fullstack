@@ -9,13 +9,41 @@
 }
 
 .items-list-header {
-  padding: 15px;
+  display: flex;
+  align-items: center;
+
+  background-color: transparent;
 
   border-bottom: var(--border);
+
+  font-weight: 300;
+  font-size: 15px;
 }
 
+.items-list-title {
+  width: 100%;
+  font-size: 15px;
+  padding: 15px;
+  color: white;
+}
+
+.items-list-header-button {
+  height: 100%;
+  padding: 15px;
+  font-size: 15px;
+  color: white;
+  background-color: purple;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+}
+
+.items-list-header-button:hover {
+  background-color: var(--foreground-color);
+}
 .items-list {
-  height: calc(100vh - 220px);
+  height: calc(100vh - 131px);
 
   padding: 10px 10px 0;
 

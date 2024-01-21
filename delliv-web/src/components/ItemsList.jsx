@@ -22,7 +22,18 @@ function ItemsList({ items, createOrder }) {
   return (
     <>
       <div className="items-list-wraper">
-        <div className="items-list-header">Items</div>
+        <div className="items-list-header">
+          <div className="items-list-title">Items</div>
+          <button
+            className="items-list-header-button"
+            onClick={(e) => {
+              setSelectedItems({});
+              createOrder(e, selectedItems);
+            }}
+          >
+            Novo pedido
+          </button>
+        </div>
         <div className="items-list">
           {items.map((item) => (
             <div key={item.id} className="item-card">
@@ -61,17 +72,6 @@ function ItemsList({ items, createOrder }) {
               </div>
             </div>
           ))}
-        </div>
-        <div className="items-list-actions">
-          <button
-            className="create-order-button"
-            onClick={(e) => {
-              setSelectedItems({});
-              createOrder(e, selectedItems);
-            }}
-          >
-            CRIAR PEDIDO
-          </button>
         </div>
       </div>
     </>

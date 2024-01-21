@@ -16,6 +16,8 @@ const io = new Server(server, {
 app.use(express.json());
 app.use(cors());
 
+app.post('/login', controller.login);
+
 app.get('/get-all-delivery-people', controller.getAllDeliveryPeople);
 app.get('/get-delivery-person/:id', controller.getDeliveryPerson);
 app.post('/create-delivery-person', controller.createDeliveryPerson);
@@ -32,6 +34,12 @@ app.delete('/delete-order/:idStore/:uuid', controller.deleteOrder);
 
 io.on('connection', (socket) => {
   console.log(`a user connected at socket ${socket.id}`);
+
+  socket.on('request-delivery-person', (idStore, type) => {
+    console.log(`A loja ${idStore} quer um entregador`);
+
+    socket.broadcast.emit('');
+  });
 });
 
 app.listen(3000, () => {
