@@ -28,9 +28,9 @@
 .open-orders-list {
   background-color: transparent;
 
-  padding: 10px 10px 0;
+  padding: 10px 25px 0;
 
-  height: calc(100vh - 131px);
+  height: calc(100vh - 160px);
 
   overflow-y: auto;
 }
@@ -39,9 +39,9 @@
   padding: 10px 0;
   margin-bottom: 10px;
 
-  background-color: var(--foreground-color);
   border: var(--border);
   border-radius: var(--card-border-radius);
+  background-color: var(--foreground-color);
 }
 
 .open-orders-card-header {
@@ -69,10 +69,12 @@
 .open-orders-card-table {
   background-color: var(--dark-bg-color-2);
   width: 100%;
+  border-collapse: collapse;
 }
 
 .open-orders-card-table-header {
   background-color: transparent;
+  border-bottom: var(--border);
 }
 
 .open-orders-card-table-header-cell {
@@ -80,7 +82,6 @@
   font-size: 12px;
   font-weight: 300;
   padding: 5px;
-  border-bottom: var(--border);
 }
 
 .open-orders-card-table-row {
@@ -91,7 +92,7 @@
   background-color: transparent;
   font-size: 12px;
   font-weight: 400;
-  padding: 5px;
+  padding: 5px 20px;
 }
 
 .open-orders-card-actions {

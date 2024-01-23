@@ -13,7 +13,7 @@
   --fw-light: 100;
 
   /* dark mode */
-  --dark-background-color: rgb(24, 24, 24);
+  --dark-background-color: black;
   --dark-foreground-color: rgba(33, 33, 33, 255);
 
   --dark-highlight-color: #800080ff;
@@ -27,8 +27,8 @@
   --dark-button-color-hover: var(--purple);
 
   /* light mode */
-  --light-background-color: #fafafa;
-  --light-foreground-color: #f8fafd;
+  --light-background-color: white;
+  --light-foreground-color: #f0f0f0;
 
   --light-highlight-color: #800080ff;
 
@@ -51,6 +51,7 @@
     --foreground-color: var(--dark-foreground-color);
     --border: var(--dark-border);
     --font-color: var(--dark-font-color);
+    --font-color-invert: var(--light-font-color);
     --highlight-color: var(--dark-highlight-color);
   }
 }
@@ -61,6 +62,7 @@
     --foreground-color: var(--light-foreground-color);
     --border: var(--light-border);
     --font-color: var(--light-font-color);
+    --font-color-invert: var(--dark-font-color);
     --highlight-color: var(--light-highlight-color);
   }
 }
@@ -74,4 +76,25 @@
 
   background-color: var(--background-color);
   font-family: var(--ff-primary);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--foreground-color);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: var(--highlight-color);
 }

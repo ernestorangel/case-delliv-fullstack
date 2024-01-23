@@ -10,7 +10,7 @@
 }
 
 .delivery-person-list {
-  height: calc(100vh - 131px);
+  height: calc(100vh - 160px);
 
   background-color: transparent;
 
@@ -18,40 +18,11 @@
   overflow-y: auto;
 }
 
-.delivery-person-list-header {
-  padding: 0 0 0 15px;
-
-  display: flex;
-  align-items: center;
-
-  background-color: transparent;
-
-  border-bottom: var(--border);
-
-  font-weight: 300;
-  font-size: 15px;
-}
-
-.delivery-person-title {
+.empty-list-text {
   width: 100%;
-  color: white;
-}
+  padding: 25px;
 
-.delivery-person-header-button {
-  padding: 15px;
-  color: white;
-  font-size: 15px;
   font-weight: 300;
-  padding: 15px;
-  background-color: purple;
-
-  white-space: nowrap;
-
-  cursor: pointer;
-}
-
-.delivery-person-header-button:hover {
-  background-color: var(--foreground-color);
 }
 
 .delivery-person-card {

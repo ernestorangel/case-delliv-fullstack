@@ -33,13 +33,23 @@ app.post('/create-order', controller.createOrder);
 app.delete('/delete-order/:idStore/:uuid', controller.deleteOrder);
 
 io.on('connection', (socket) => {
-  console.log(`a user connected at socket ${socket.id}`);
+  const type = socket.handshake.query.type;
+  console.log(`a ${type} connected at socket ${socket.id}`);
 
-  socket.on('request-delivery-person', (idStore, type) => {
-    console.log(`A loja ${idStore} quer um entregador`);
+  if (type == 'delivery-person') socket.join('delivery-people');
 
-    socket.broadcast.emit('');
+  socket.on('request-delivery-person', (store) => {
+    console.log(`A loja ${store.name} quer um entregador`);
+    socket.to('delivery-people').emit('delivery-request', store);
   });
+
+  socket.on('accept-store-request', (deliveryPerson, store) => {
+    console.log(`${deliveryPerson.name} aceita o pedido de ${store.name}`);
+  });
+
+  // socket.on('confirm-delivery-person-arrival');
+
+  // socket.on('confirm-delivery-finished');
 });
 
 app.listen(3000, () => {

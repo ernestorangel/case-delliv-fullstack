@@ -5,9 +5,9 @@ const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
 
 async function login(req, res) {
-  const { username, password } = req.body;
+  const { type, username, password } = req.body;
 
-  const sql_query = sql.getStoreByUsername(username);
+  const sql_query = sql.getByUsername(type, username);
   const rows = await db.runQuery(sql_query);
   const store = rows[0];
 

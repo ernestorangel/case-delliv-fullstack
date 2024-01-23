@@ -16,7 +16,7 @@
   flex-direction: row;
   align-items: center;
 
-  border-bottom: var(--border);
+  /* border-bottom: var(--border); */
 }
 
 .orders-list-title {
@@ -24,23 +24,23 @@
 
   width: 100%;
 
-  font-size: 15px;
-  font-weight: 300;
-  padding: 15px;
+  font-size: 25px;
+  font-weight: 500;
+  padding: 15px 25px;
 }
 
 .orders-list {
   background-color: transparent;
 
-  height: calc(100vh - 131px);
+  height: calc(100vh - 160px);
 
-  padding: 10px 10px 0;
+  padding: 10px 25px 0;
 
   overflow-y: auto;
   overflow-x: hidden;
 }
 
-.order-card {
+/* .order-card {
   width: 100%;
 
   background-color: var(--foreground-color);
@@ -55,4 +55,4 @@
 
   display: flex;
   flex-direction: row;
-}
+} */

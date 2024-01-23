@@ -1,14 +1,32 @@
 import React from 'react';
 
+import AreaHeader from './AreaHeader';
+
 import '../styles/DeliveryPersonList.css';
 
-function DeliveryPersonList({ onRequest, deliveryPeople, onSelect, selected }) {
-  if (!deliveryPeople) {
+function DeliveryPersonList({
+  deliveryPeople,
+  selectedDeliveryPerson,
+  onSelectDeliveryPerson,
+  onRequestDeliveryPerson,
+}) {
+  if (!deliveryPeople.length) {
     return (
       <>
         <div className="delivery-person-list-wraper">
-          <div className="delivery-person-title">Entregadores</div>
-          <div className="delivery-person-list">Nenhum encontrado.</div>
+          <AreaHeader
+            title="Entregadores"
+            button={{
+              icon: 'src/assets/images/icons/mais.png',
+              text: 'Solicitar entregador',
+              onClick: onRequestDeliveryPerson,
+            }}
+          ></AreaHeader>
+          <div className="delivery-person-list">
+            <div className="empty-list-text">
+              Solicite um entregador para iniciar.
+            </div>
+          </div>
         </div>
       </>
     );
@@ -17,26 +35,26 @@ function DeliveryPersonList({ onRequest, deliveryPeople, onSelect, selected }) {
   return (
     <>
       <div className="delivery-person-list-wraper">
-        <div className="delivery-person-list-header">
-          <div className="delivery-person-title">Entregadores</div>
-          <button
-            className="delivery-person-header-button"
-            onClick={(e) => onRequest(e)}
-          >
-            Solicitar entregador
-          </button>
-        </div>
+        <AreaHeader
+          title="Entregadores"
+          button={{
+            icon: 'src/assets/images/icons/mais.png',
+            text: 'Solicitar entregador',
+            onClick: onRequestDeliveryPerson,
+          }}
+        ></AreaHeader>
 
         <div className="delivery-person-list">
           {deliveryPeople.map((deliveryPerson) => (
             <div
               key={deliveryPerson.id}
               className={
-                selected && deliveryPerson.id == selected.id
+                selectedDeliveryPerson &&
+                deliveryPerson.id == selectedDeliveryPerson.id
                   ? 'delivery-person-card card-selected'
                   : 'delivery-person-card'
               }
-              onClick={(e) => onSelect(e, deliveryPerson)}
+              onClick={(e) => onSelectDeliveryPerson(e, deliveryPerson)}
             >
               <div className="delivery-person-picture">
                 <img
@@ -51,9 +69,9 @@ function DeliveryPersonList({ onRequest, deliveryPeople, onSelect, selected }) {
                 <div className="delivery-person-info-title">
                   {deliveryPerson.name}
                 </div>
-                <div className="delivery-person-info-description">
+                {/* <div className="delivery-person-info-description">
                   Mussum Ipsum
-                </div>
+                </div> */}
               </div>
             </div>
           ))}

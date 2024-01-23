@@ -1,0 +1,51 @@
+.order-card {
+  width: 100%;
+
+  padding: 25px;
+  margin-bottom: 20px;
+  border-radius: var(--card-border-radius);
+
+  background-color: var(--foreground-color);
+}
+
+.order-card-content {
+  background-color: transparent;
+}
+
+.order-card-header {
+  background-color: transparent;
+
+  font-size: 16px;
+}
+
+.order-card-table {
+  width: 100%;
+  font-weight: 200;
+  font-size: 14px;
+  background-color: transparent;
+  margin-top: 20px;
+  padding: 10px;
+  border: var(--border);
+  border-radius: var(--card-inner-border-radius);
+}
+
+.order-card-table-head {
+  background-color: transparent;
+}
+
+.order-card-table-header-cell {
+  background-color: transparent;
+}
+
+.order-card-table-body {
+  background-color: transparent;
+}
+
+.order-card-table-row {
+  background-color: transparent;
+}
+
+.order-card-table-cell {
+  background-color: transparent;
+  padding: 5px;
+}

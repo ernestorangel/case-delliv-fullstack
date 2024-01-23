@@ -1,25 +1,19 @@
 import '../styles/OrdersList.css';
 
-function OrdersList({ selected }) {
-  if (!selected) {
+import AreaHeader from './AreaHeader';
+import OrderCard from './OrderCard';
+
+function OrdersList({ specificOrders, selectedDeliveryPerson }) {
+  if (!Object.keys(selectedDeliveryPerson).length) {
     return (
       <>
         <div className="orders-list-wraper">
-          <div className="orders-list-header">
-            <div className="orders-list-title">Pedidos</div>
-            {/* <div className="orders-add-button">
-              <img
-                className="orders-add-button-icon"
-                src="src\assets\images\icons\mais.png"
-                width="20px"
-              ></img>
-              Novo Pedido
-            </div> */}
-          </div>
-          <div className="orders-list">
-            <div className="order-card">
-              Pedido #1234<br></br>3 itens
-            </div>
+          <AreaHeader
+            title={'Pedidos com Entregador'}
+            button={false}
+          ></AreaHeader>
+          <div className="empty-list-text">
+            Selecione um entregador para ver seus pedidos.
           </div>
         </div>
       </>
@@ -29,48 +23,18 @@ function OrdersList({ selected }) {
   return (
     <>
       <div className="orders-list-wraper">
-        <div className="orders-list-header">
-          <div className="orders-list-title">Pedidos com {selected.name}</div>
-          {/* <div className="orders-add-button">
-            <img
-              className="orders-add-button-icon"
-              src="src\assets\images\icons\mais.png"
-              width="20px"
-            ></img>
-            Novo Pedido
-          </div> */}
-        </div>
+        <AreaHeader
+          title={
+            selectedDeliveryPerson.name
+              ? `Pedidos com ${selectedDeliveryPerson.name}`
+              : 'Pedidos com Entregador'
+          }
+          button={false}
+        ></AreaHeader>
         <div className="orders-list">
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
-          <div className="order-card">
-            Pedido #1234<br></br>3 itens
-          </div>
+          {specificOrders.map((order) => (
+            <OrderCard key={order.uuid} order={order}></OrderCard>
+          ))}
         </div>
       </div>
     </>

@@ -1,7 +1,7 @@
-function getStoreByUsername(username) {
+function getByUsername(type, username) {
   let query = `
     SELECT *
-    FROM delliv_db.store
+    FROM delliv_db.${type}
     WHERE username = '${username}'
   `;
   return query;
@@ -154,7 +154,7 @@ function deleteOrder({ idStore, uuid }) {
 }
 
 module.exports = {
-  getStoreByUsername,
+  getByUsername,
   getAllDeliveryPeople,
   getDeliveryPerson,
   createDeliveryPerson,
