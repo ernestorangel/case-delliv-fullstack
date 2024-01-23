@@ -51,7 +51,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   // Connect to WebSocket on Login
   React.useEffect(() => {
-    if (store) {
+    if (Object.keys(store).length) {
       const socket = io(serverSocketAddress, {
         transports: ['websocket'],
         query: {
@@ -63,19 +63,21 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   }, [store]);
 
   React.useEffect(() => {
-    axios.get(`${serverApiAddress}/get-all-delivery-people`).then((res) => {
-      setDeliveryPeople(res.data);
-    });
+    if (Object.keys(store).length)
+      axios.get(`${serverApiAddress}/get-all-delivery-people`).then((res) => {
+        setDeliveryPeople(res.data);
+      });
   }, []);
 
   React.useEffect(() => {
-    axios.get(`${serverApiAddress}/get-all-items`).then((res) => {
-      setItems(res.data);
-    });
+    if (Object.keys(store).length)
+      axios.get(`${serverApiAddress}/get-all-items`).then((res) => {
+        setItems(res.data);
+      });
   }, [store]);
 
   React.useEffect(() => {
-    if (store)
+    if (Object.keys(store).length)
       axios
         .get(`${serverApiAddress}/get-all-open-orders/${store.id}`)
         .then((res) => {
