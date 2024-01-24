@@ -1,6 +1,7 @@
 const controller = require('./controller');
 const { route } = require('./controllers/route');
 const { deliveryPerson } = require('./controllers/deliveryPerson');
+const { store } = require('./controllers/store');
 
 module.exports = {
   setEndpoints: (app) => {
@@ -30,6 +31,12 @@ module.exports = {
       deliveryPerson.getRoutes
     );
 
+    // NOVOS CONTROLLERS
+
+    // LOJA
+    app.get('/store/get-routes/:idStore', store.getRoutes);
+
+    // entregador
     app.get('/delivery-person/get-requests/', deliveryPerson.getRequests);
 
     // rota

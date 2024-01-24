@@ -30,26 +30,31 @@ module.exports = {
 
             socket.to('delivery-people').emit('delivery-request', {
               routeId: res.data.insertId,
+              storeSocketId: socket.id,
             });
           });
       });
 
-      socket.on('accept-store-request', async (deliveryPerson, store) => {
-        await axios
-          .post(
-            `http://${process.env.API_HOST}:${process.env.API_PORT}/route/setDeliveryPerson`,
-            { routeId: route.id, deliveryPersonId: deliveryPerson.id }
-          )
-          .then((res) => {
-            console.log(
-              `${deliveryPerson.name} aceita o pedido de ${store.name}`
-            );
-            socket.to(store.socket).emit('delivery-person-accepted', {
-              ...deliveryPerson,
-              socket: socket.id,
+      socket.on(
+        'accept-store-request',
+        async (deliveryPersonId, routeId, storeSocketId) => {
+          await axios
+            .post(
+              `http://${process.env.API_HOST}:${process.env.API_PORT}/route/set-delivery-person`,
+              { routeId: routeId, deliveryPersonId: deliveryPersonId }
+            )
+            .then((res) => {
+              console.log(
+                'res.data accept-store-request: ',
+                res.data,
+                storeSocketId
+              );
+              socket
+                .to(storeSocketId)
+                .emit('delivery-person-accepted', routeId);
             });
-          });
-      });
+        }
+      );
 
       socket.on('join-room', (deliveryPerson) => {
         socket.join(deliveryPerson.socket);

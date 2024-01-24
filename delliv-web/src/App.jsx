@@ -26,6 +26,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   // Orders State
   const [openOrders, setOpenOrders] = React.useState([]);
   const [specificOrders, setSpecificOrders] = React.useState([]);
+  const [selectedOpenOrders, setSelectedOpenOrders] = React.useState([]);
   const [selectedOpenOrder, setSelectedOpenOrder] = React.useState({});
 
   // Items State
@@ -37,6 +38,10 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   const [selectedDeliveryPerson, setSelectedDeliveryPerson] = React.useState(
     {}
   );
+
+  // Routes State
+  const [routes, setRoutes] = React.useState([]);
+  const [selectedRoute, setSelectedRoute] = React.useState({});
 
   // Toast methods
   const showToast = (type, message) => {
@@ -58,9 +63,16 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
           type: clientType,
         },
       });
-      socket.on('delivery-person-accepted', (deliveryPerson) => {
-        setDeliveryPeople([...deliveryPeople, deliveryPerson]);
-        socket.emit('join-room', deliveryPerson);
+      socket.on('delivery-person-accepted', async (routeId) => {
+        await axios
+          .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+          .then((res) => {
+            console.log('deliveryPeople: ', res.data);
+            setRoutes(res.data);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       });
       setSocket(socket);
     }
@@ -68,10 +80,12 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   React.useEffect(() => {
     if (Object.keys(store).length)
-      axios.get(`${serverApiAddress}/get-all-delivery-people`).then((res) => {
-        setDeliveryPeople(res.data);
-      });
-  }, []);
+      axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+        .then((res) => {
+          setRoutes(res.data);
+        });
+  }, [store]);
 
   React.useEffect(() => {
     if (Object.keys(store).length)
@@ -116,8 +130,24 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   const onAddOrdersToDeliveryPerson = () => {};
 
-  const onSelectDeliveryPerson = (e, deliveryPerson) => {
-    setSelectedDeliveryPerson(deliveryPerson);
+  const onSelectOrder = (uuid) => {
+    setSelectedOpenOrders([...selectedOpenOrders, uuid]);
+  };
+
+  const onAddOrdersToRoute = async () => {
+    await axios
+      .post('', {
+        routeId: selectedRoute.routeId,
+        orders: selectedOpenOrders,
+      })
+      .then((res) => {
+        // atualizar open orders, e orders in route
+      });
+  };
+
+  const onSelectDeliveryPerson = (e, route) => {
+    //setSelectedDeliveryPerson(deliveryPerson);
+    setSelectedRoute(route);
   };
 
   const onAddItemCount = (id, addBy) => {
@@ -162,6 +192,8 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       <AppBar store={store}></AppBar>
       <AppContent
         deliveryPeople={deliveryPeople}
+        routes={routes}
+        selectedRoute={selectedRoute}
         selectedDeliveryPerson={selectedDeliveryPerson}
         specificOrders={specificOrders}
         openOrders={openOrders}
@@ -170,6 +202,8 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         selectedItems={selectedItems}
         onRequestDeliveryPerson={onRequestDeliveryPerson}
         onSelectDeliveryPerson={onSelectDeliveryPerson}
+        onAddOrdersToRoute={onAddOrdersToRoute}
+        onSelectOrder={onSelectOrder}
         onAddOrdersToDeliveryPerson={onAddOrdersToDeliveryPerson}
         onAddItemCount={onAddItemCount}
         onCreateOrder={onCreateOrder}

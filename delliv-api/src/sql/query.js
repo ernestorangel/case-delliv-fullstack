@@ -1,4 +1,35 @@
 module.exports = {
+  store: {
+    getRoutes: (idStore) => {
+      let query = `
+        SELECT 
+        r.id AS routeId,
+        dp.id AS deliveryPersonId,
+        dp.name AS deliveryPersonName,
+        s.status AS routeStatus,
+        o.uuidOrder AS uuidOrder
+        FROM delliv_db.routes AS r
+        LEFT JOIN delliv_db.delivery_person AS dp
+        ON r.idDeliveryPerson = dp.id
+        LEFT JOIN delliv_db.route_status AS s
+        ON r.idStatus = s.id
+        LEFT JOIN delliv_db.orders_in_route AS o
+        ON r.id = o.idRoute
+        WHERE idStore = ${idStore}
+        AND idStatus != 6
+      `;
+      return query;
+    },
+    getOpenRequests: (idStore) => {
+      let query = `
+        SELECT *
+        FROM delliv_db.routes
+        WHERE idStore = ${idStore}
+        AND idStatus = 0
+      `;
+      return query;
+    },
+  },
   deliveryPerson: {
     getRequests: () => {
       let query = `
@@ -14,13 +45,13 @@ module.exports = {
       return query;
     },
     getRoutes: (idDeliveryPerson) => {
-      let query = `
-        INSERT INTO delliv_db.routes 
-        (idStore, idStatus, storeRequestDatetime)
-        VALUES
-        (\'${storeId}\', \'${status}\', NOW())
-      `;
-      return query;
+      // let query = `
+      //   INSERT INTO delliv_db.routes
+      //   (idStore, idStatus, storeRequestDatetime)
+      //   VALUES
+      //   (\'${storeId}\', \'${status}\', NOW())
+      // `;
+      // return query;
     },
   },
   route: {
@@ -36,8 +67,12 @@ module.exports = {
     setDeliveryPerson: (routeId, deliveryPersonId) => {
       let query = `
         UPDATE delliv_db.routes
-        SET idDeliveryPerson = ${deliveryPersonId}
+        SET 
+        idDeliveryPerson = ${deliveryPersonId},
+        idStatus = 1,
+        deliveryPersonAcceptDatetime = NOW()
         WHERE id = ${routeId}
+        AND idStatus = 0
       `;
       return query;
     },

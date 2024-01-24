@@ -1,10 +1,18 @@
 import '../styles/OrderCard.css';
 
-function OrderCard({ order }) {
+function OrderCard({ order, onSelectOrder }) {
   return (
     <>
       <div className="order-card">
-        <div className="order-card-header">{order.uuid}</div>
+        <div className="order-card-header">
+          <input
+            className="order-card-check"
+            type="checkbox"
+            id={order.uuid}
+            onChange={() => onSelectOrder(order.uuid)}
+          />
+          {order.uuid}
+        </div>
         <div className="order-card-content">
           <table className="order-card-table">
             <thead className="order-card-table-head">

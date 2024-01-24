@@ -1,10 +1,16 @@
 const db = require('../db');
-const { route } = require('../sql/query');
+const { store, route } = require('../sql/query');
 
 module.exports = {
   route: {
     create: async (req, res) => {
       const { storeId } = req.body;
+
+      const storeSql = store.getOpenRequests(storeId);
+      const openRequests = await db.runQuery(storeSql);
+      console.log(openRequests);
+      if (openRequests.length)
+        return res.status(200).send('Request já foi feito.');
 
       const sql = route.create(storeId, 0);
       const result = await db.runQuery(sql);

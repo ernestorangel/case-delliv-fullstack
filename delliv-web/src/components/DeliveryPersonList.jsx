@@ -6,11 +6,13 @@ import '../styles/DeliveryPersonList.css';
 
 function DeliveryPersonList({
   deliveryPeople,
+  routes,
+  selectedRoute,
   selectedDeliveryPerson,
   onSelectDeliveryPerson,
   onRequestDeliveryPerson,
 }) {
-  if (!deliveryPeople.length) {
+  if (!routes.length) {
     return (
       <>
         <div className="delivery-person-list-wraper">
@@ -45,16 +47,15 @@ function DeliveryPersonList({
         ></AreaHeader>
 
         <div className="delivery-person-list">
-          {deliveryPeople.map((deliveryPerson) => (
+          {routes.map((route) => (
             <div
-              key={deliveryPerson.id}
+              key={route.routeId}
               className={
-                selectedDeliveryPerson &&
-                deliveryPerson.id == selectedDeliveryPerson.id
+                selectedRoute && route.routeId == selectedRoute.routeId
                   ? 'delivery-person-card card-selected'
                   : 'delivery-person-card'
               }
-              onClick={(e) => onSelectDeliveryPerson(e, deliveryPerson)}
+              onClick={(e) => onSelectDeliveryPerson(e, route)}
             >
               <div className="delivery-person-picture">
                 <img
@@ -67,11 +68,11 @@ function DeliveryPersonList({
               </div>
               <div className="delivery-person-info">
                 <div className="delivery-person-info-title">
-                  {deliveryPerson.name}
+                  {route.deliveryPersonName}
                 </div>
-                {/* <div className="delivery-person-info-description">
-                  Mussum Ipsum
-                </div> */}
+                <div className="delivery-person-info-description">
+                  {route.routeStatus}
+                </div>
               </div>
             </div>
           ))}
