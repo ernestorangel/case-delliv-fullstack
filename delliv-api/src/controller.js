@@ -1,8 +1,42 @@
 const sql = require('./sql_queries');
 const db = require('./db');
-const helper = require('./helper');
+const helper = require('./assets/helper');
 const bcrypt = require('bcrypt');
 const { v4: uuidv4 } = require('uuid');
+
+// module.exports = {
+//   general: {
+//     login: () => {},
+//   },
+//   store: {
+//     create: () => {},
+//     getItems: (id) => {},
+//     getOpenOrders: (id) => {},
+//     getRoutes: (id) => {},
+//     createRoute: (id) => {},
+//   },
+//   deliveryPerson: {
+//     create: () => {},
+//   },
+//   order: {
+//     create: (items) => {},
+//     delete: (id) => {},
+//   },
+//   item: {
+//     create: () => {},
+//   },
+//   routes: {
+//     setDeliveryPerson: (id, deliveryPerson) => {},
+//     setDeliveryPersonArrival: (id) => {},
+//     setArrivalConfirmation: (id) => {},
+//     setLoad: (id) => {},
+//     setLoadConfirmation: (id) => {},
+//     setOrders: (id, orders) => {},
+//     setStart: (id) => {},
+//     setFinish: (id) => {},
+//     setFinishConfirmation: (id) => {},
+//   },
+// };
 
 async function login(req, res) {
   const { type, username, password } = req.body;
@@ -158,6 +192,10 @@ async function deleteOrder(req, res) {
   res.send(result_2);
 }
 
+async function getStoreRoutes(req, res) {
+  res.send();
+}
+
 module.exports = {
   login,
   getAllDeliveryPeople,
@@ -170,4 +208,5 @@ module.exports = {
   getAllOpenOrders,
   createOrder,
   deleteOrder,
+  getStoreRoutes,
 };

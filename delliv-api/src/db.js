@@ -1,10 +1,13 @@
 const mysql = require('mysql');
 
+const dotenv = require('dotenv');
+dotenv.config();
+
 const db_config = {
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'delliv1234',
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
 };
 
 async function runQuery(sql_query) {

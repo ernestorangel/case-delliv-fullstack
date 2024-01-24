@@ -153,6 +153,8 @@ function deleteOrder({ idStore, uuid }) {
   return query;
 }
 
+function getStoreRoutes({}) {}
+
 module.exports = {
   getByUsername,
   getAllDeliveryPeople,
@@ -165,4 +167,5 @@ module.exports = {
   getAllOpenOrders,
   createOrder,
   deleteOrder,
+  getStoreRoutes,
 };

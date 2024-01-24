@@ -58,6 +58,10 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
           type: clientType,
         },
       });
+      socket.on('delivery-person-accepted', (deliveryPerson) => {
+        setDeliveryPeople([...deliveryPeople, deliveryPerson]);
+        socket.emit('join-room', deliveryPerson);
+      });
       setSocket(socket);
     }
   }, [store]);
