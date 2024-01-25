@@ -12,6 +12,7 @@ function DeliveryPersonList({
   onSelectDeliveryPerson,
   onRequestDeliveryPerson,
 }) {
+  console.log('DeliveryPersonList (routes): ', routes);
   if (!routes.length) {
     return (
       <>

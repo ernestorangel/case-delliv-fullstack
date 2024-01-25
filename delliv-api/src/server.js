@@ -37,7 +37,10 @@ module.exports = {
     app.get('/store/get-routes/:idStore', store.getRoutes);
 
     // entregador
-    app.get('/delivery-person/get-requests/', deliveryPerson.getRequests);
+    app.get(
+      '/delivery-person/get-requests/:deliveryPersonId',
+      deliveryPerson.getRequests
+    );
 
     // rota
     app.post('/route/create', route.create);

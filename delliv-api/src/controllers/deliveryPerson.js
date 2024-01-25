@@ -4,7 +4,9 @@ const { deliveryPerson } = require('../sql/query');
 module.exports = {
   deliveryPerson: {
     getRequests: async (req, res) => {
-      const sql = deliveryPerson.getRequests();
+      const { deliveryPersonId } = req.params;
+
+      const sql = deliveryPerson.getRequests(deliveryPersonId);
       const result = await db.runQuery(sql);
 
       res.send(result);

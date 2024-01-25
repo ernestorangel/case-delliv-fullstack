@@ -130,18 +130,32 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   const onAddOrdersToDeliveryPerson = () => {};
 
-  const onSelectOrder = (uuid) => {
-    setSelectedOpenOrders([...selectedOpenOrders, uuid]);
+  const onSelectOrder = (e, uuid, isChecked) => {
+    const found = selectedOpenOrders.find((id) => uuid == id);
+
+    if (isChecked && !found)
+      setSelectedOpenOrders([...selectedOpenOrders, uuid]);
+
+    if (!isChecked && found)
+      setSelectedOpenOrders([...selectedOpenOrders.filter((id) => id != uuid)]);
   };
 
   const onAddOrdersToRoute = async () => {
     await axios
-      .post('', {
+      .post(`${serverApiAddress}/route/set-orders`, {
         routeId: selectedRoute.routeId,
+        storeId: store.id,
         orders: selectedOpenOrders,
       })
       .then((res) => {
-        // atualizar open orders, e orders in route
+        console.log('onAddOrdersToRoute res.data: ', res.data);
+        setRoutes(res.data.routes);
+        setSelectedRoute(
+          res.data.routes.filter(
+            (route) => route.routeId == selectedRoute.routeId
+          )[0]
+        );
+        setOpenOrders(res.data.openOrders);
       });
   };
 

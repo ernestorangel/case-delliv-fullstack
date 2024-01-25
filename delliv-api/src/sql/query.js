@@ -7,16 +7,23 @@ module.exports = {
         dp.id AS deliveryPersonId,
         dp.name AS deliveryPersonName,
         s.status AS routeStatus,
-        o.uuidOrder AS uuidOrder
+        o.uuid AS uuidOrder,
+        o.quantity AS itemQuantity,
+        i.sku AS itemSku,
+        i.name AS itemName
         FROM delliv_db.routes AS r
         LEFT JOIN delliv_db.delivery_person AS dp
         ON r.idDeliveryPerson = dp.id
         LEFT JOIN delliv_db.route_status AS s
         ON r.idStatus = s.id
-        LEFT JOIN delliv_db.orders_in_route AS o
-        ON r.id = o.idRoute
-        WHERE idStore = ${idStore}
-        AND idStatus != 6
+        LEFT JOIN delliv_db.orders_in_route AS oir
+        ON r.id = oir.idRoute
+        LEFT JOIN delliv_db.order AS o
+        ON oir.uuidOrder = o.uuid
+        LEFT JOIN delliv_db.item AS i
+        ON o.idItem = i.id
+        WHERE r.idStore = ${idStore}
+        AND r.idStatus != 6
       `;
       return query;
     },
@@ -31,7 +38,7 @@ module.exports = {
     },
   },
   deliveryPerson: {
-    getRequests: () => {
+    getRequests: (deliveryPersonId) => {
       let query = `
         SELECT 
         r.id AS idRoute,
@@ -44,12 +51,12 @@ module.exports = {
       `;
       return query;
     },
-    getRoutes: (idDeliveryPerson) => {
+    getRoutes: (deliveryPersonId) => {
       // let query = `
-      //   INSERT INTO delliv_db.routes
-      //   (idStore, idStatus, storeRequestDatetime)
-      //   VALUES
-      //   (\'${storeId}\', \'${status}\', NOW())
+      //   SELECT
+      //   *
+      //   FROM delliv_db.routes AS r
+      //   WHERE r.idDeliveryPerson = ${deliveryPersonId}
       // `;
       // return query;
     },
@@ -111,8 +118,8 @@ module.exports = {
     setOrders: (routeId, orders) => {
       let values = [];
 
-      for (const order of orders) {
-        values.push(`(\'${routeId}\',\'${order.id}\' )`);
+      for (const uuid of orders) {
+        values.push(`(\'${routeId}\',\'${uuid}\' )`);
       }
 
       let query = `

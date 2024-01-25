@@ -4,7 +4,7 @@ import AreaHeader from './AreaHeader';
 import OrderCard from './OrderCard';
 
 function OrdersList({ selectedRoute, specificOrders, selectedDeliveryPerson }) {
-  console.log('selectedRoute', selectedRoute);
+  console.log('selectedRoute: ', selectedRoute);
   if (!Object.keys(selectedRoute).length) {
     return (
       <>

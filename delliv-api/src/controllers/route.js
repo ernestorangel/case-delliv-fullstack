@@ -1,5 +1,6 @@
 const db = require('../db');
 const { store, route } = require('../sql/query');
+const { groupOrdersByRoute } = require('../assets/helper');
 
 module.exports = {
   route: {
@@ -58,12 +59,26 @@ module.exports = {
       res.send(result);
     },
     setOrders: async (req, res) => {
-      const { routeId, orders } = req.body;
+      const { routeId, storeId, orders } = req.body;
 
-      const sql = route.setOrders(routeId, orders);
-      const result = await db.runQuery(sql);
+      const setOrdersSql = route.setOrders(routeId, orders);
+      const setOrdersResult = await db.runQuery(setOrdersSql);
 
-      res.send(result);
+      // check se criou
+      console.log('setOrdersResult: ', setOrdersResult);
+
+      const getRoutesSql = store.getRoutes(storeId);
+      const getRoutesResult = groupOrdersByRoute(
+        await db.runQuery(getRoutesSql)
+      );
+
+      const getOpenOrdersSql = store.getRoutes(storeId);
+      const getOpenOrdersResult = await db.runQuery(getOpenOrdersSql);
+
+      res.send({
+        routes: getRoutesResult,
+        openOrders: getOpenOrdersResult,
+      });
     },
     setStart: async (req, res) => {
       const { routeId } = req.body;

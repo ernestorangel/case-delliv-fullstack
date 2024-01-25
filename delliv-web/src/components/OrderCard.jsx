@@ -9,7 +9,10 @@ function OrderCard({ order, onSelectOrder }) {
             className="order-card-check"
             type="checkbox"
             id={order.uuid}
-            onChange={() => onSelectOrder(order.uuid)}
+            value={order.uuid}
+            onChange={(e) =>
+              onSelectOrder(e.target.id, order.uuid, e.target.checked)
+            }
           />
           {order.uuid}
         </div>
