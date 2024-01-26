@@ -1,6 +1,6 @@
 import '../styles/OrderCard.css';
 
-function OrderCard({ order, onSelectOrder }) {
+function OrderCard({ order, onSelectOrder, onDeleteOpenOrder }) {
   return (
     <>
       <div className="order-card">
@@ -15,6 +15,15 @@ function OrderCard({ order, onSelectOrder }) {
             }
           />
           {order.uuid}
+          <button
+            className="order-card-button"
+            onClick={(e) => onDeleteOpenOrder(e, order.uuid)}
+          >
+            <img
+              className="order-card-button-icon"
+              src="src/assets/images/icons/delete.png"
+            />
+          </button>
         </div>
         <div className="order-card-content">
           <table className="order-card-table">

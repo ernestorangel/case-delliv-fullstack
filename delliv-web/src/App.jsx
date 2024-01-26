@@ -159,6 +159,8 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       });
   };
 
+  const onDeleteOpenOrder = (e, uuid) => {};
+
   const onSelectDeliveryPerson = (e, route) => {
     //setSelectedDeliveryPerson(deliveryPerson);
     setSelectedRoute(route);
@@ -217,6 +219,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         onRequestDeliveryPerson={onRequestDeliveryPerson}
         onSelectDeliveryPerson={onSelectDeliveryPerson}
         onAddOrdersToRoute={onAddOrdersToRoute}
+        onDeleteOpenOrder={onDeleteOpenOrder}
         onSelectOrder={onSelectOrder}
         onAddOrdersToDeliveryPerson={onAddOrdersToDeliveryPerson}
         onAddItemCount={onAddItemCount}

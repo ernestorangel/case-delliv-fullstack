@@ -7,6 +7,7 @@ function OpenOrdersList({
   openOrders,
   onSelectOrder,
   onAddOrdersToRoute,
+  onDeleteOpenOrder,
   selectedOpenOrder,
   onAddOrdersToDeliveryPerson,
   selectedDeliveryPerson,
@@ -45,6 +46,7 @@ function OpenOrdersList({
               key={order.uuid}
               order={order}
               onSelectOrder={onSelectOrder}
+              onDeleteOpenOrder={onDeleteOpenOrder}
             ></OrderCard>
           ))}
         </div>
