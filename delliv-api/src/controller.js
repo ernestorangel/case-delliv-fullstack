@@ -1,6 +1,8 @@
-const db = require('../db');
+const db = require('./db');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 const { sql } = require('./queries');
+const { data } = require('./helper');
 
 module.exports = {
   user: {
@@ -53,38 +55,35 @@ module.exports = {
   },
   store: {
     getRoutes: async (req, res) => {
-      const { idStore } = req.params;
+      const { storeId } = req.params;
 
-      const sql = sql.store.getRoutes(idStore);
-      const result = groupOrdersByRoute(await db.runQuery(sql));
+      const query = sql.store.getRoutes(storeId);
+      const routes = data.groupOrdersByRoute(await db.runQuery(query));
 
-      console.log('result: ', result);
-
-      res.send(result);
+      res.send(routes);
     },
     getOpenOrders: async (req, res) => {
-      const { idStore } = req.params;
+      const { storeId } = req.params;
 
-      const sql = store.getOpenOrders(idStore);
-      const result = groupOrders(await db.runQuery(sql));
+      const query = sql.store.getOpenOrders(storeId);
+      const openOrders = data.groupOrders(await db.runQuery(query));
 
-      res.send(result);
+      res.send(openOrders);
     },
     getItems: async (req, res) => {
-      const { idStore } = req.params;
+      const { storeId } = req.params;
 
-      const sql = store.getItems(idStore);
-      const result = await db.runQuery(sql);
+      const query = sql.store.getItems(storeId);
+      const items = await db.runQuery(query);
 
-      res.send(result);
+      res.send(items);
     },
     createOrder: async (req, res) => {
-      const { idStore, items } = req.body;
+      const { storeId, items } = req.body;
 
       const uuid = uuidv4();
 
       let itemsArray = [];
-
       for (const idItem in items) {
         itemsArray.push({
           id: idItem,
@@ -92,13 +91,13 @@ module.exports = {
         });
       }
 
-      const sqlCreateOrder = store.createOrder(uuid, idStore, itemsArray);
+      const sqlCreateOrder = sql.store.createOrder(uuid, storeId, itemsArray);
       const createOrderInfo = await db.runQuery(sqlCreateOrder);
 
-      console.log(createOrderInfo); // implementar checagem
+      console.log(createOrderInfo);
 
-      const sqlGetOpenOrders = store.getOpenOrders(idStore);
-      const openOrders = groupOrders(await db.runQuery(sqlGetOpenOrders));
+      const sqlGetOpenOrders = sql.store.getOpenOrders(storeId);
+      const openOrders = data.groupOrders(await db.runQuery(sqlGetOpenOrders));
 
       res.send(openOrders);
     },
@@ -135,8 +134,18 @@ module.exports = {
     getRequests: async (req, res) => {
       const { deliveryPersonId } = req.params;
 
-      const sql = deliveryPerson.getRequests(deliveryPersonId);
-      const result = await db.runQuery(sql);
+      const query = sql.deliveryPerson.getRequests(deliveryPersonId);
+      const result = await db.runQuery(query);
+
+      res.send(result);
+    },
+    getRoute: async (req, res) => {
+      const { id } = req.params;
+
+      const query = sql.deliveryPerson.getRoute(id);
+      const result = await db.runQuery(query);
+
+      console.log('route: ', result);
 
       res.send(result);
     },
@@ -145,22 +154,27 @@ module.exports = {
     create: async (req, res) => {
       const { storeId } = req.body;
 
-      const storeSql = store.getOpenRequests(storeId);
+      const storeSql = sql.store.getOpenRequests(storeId);
       const openRequests = await db.runQuery(storeSql);
-      console.log(openRequests);
-      if (openRequests.length)
-        return res.status(200).send('Request já foi feito.');
+      console.log('openRequests: ', openRequests);
+      if (openRequests.length) return res.status(200).send(openRequests);
 
-      const sql = route.create(storeId, 0);
-      const result = await db.runQuery(sql);
+      const query = sql.route.create(storeId);
+      const result = await db.runQuery(query);
 
       res.send(result);
     },
     setDeliveryPerson: async (req, res) => {
       const { routeId, deliveryPersonId } = req.body;
 
-      const sql = route.setDeliveryPerson(routeId, deliveryPersonId);
-      const result = await db.runQuery(sql);
+      const storesQuery = sql.route.getActiveStore(deliveryPersonId);
+      const activeStores = await db.runQuery(storesQuery);
+
+      if (activeStores.length)
+        return res.status(200).send('Ja engajado com uma loja.');
+
+      const query = sql.route.setDeliveryPerson(routeId, deliveryPersonId);
+      const result = await db.runQuery(query);
 
       res.send(result);
     },
@@ -199,23 +213,27 @@ module.exports = {
     setOrders: async (req, res) => {
       const { routeId, storeId, orders } = req.body;
 
-      const setOrdersSql = route.setOrders(routeId, orders);
-      const setOrdersResult = await db.runQuery(setOrdersSql);
+      const querySet = sql.route.setOrders(routeId, orders);
+      const setOrdersResult = await db.runQuery(querySet);
 
       // check se criou
       console.log('setOrdersResult: ', setOrdersResult);
 
-      const getRoutesSql = store.getRoutes(storeId);
-      const getRoutesResult = groupOrdersByRoute(
-        await db.runQuery(getRoutesSql)
-      );
+      const queryUpdate = sql.order.updateStatus(orders);
+      const updateResult = await db.runQuery(queryUpdate);
 
-      const getOpenOrdersSql = store.getRoutes(storeId);
-      const getOpenOrdersResult = await db.runQuery(getOpenOrdersSql);
+      // check se criou
+      console.log('updateResult: ', updateResult);
+
+      const queryRoutes = sql.store.getRoutes(storeId);
+      const routes = data.groupOrdersByRoute(await db.runQuery(queryRoutes));
+
+      const queryOrders = sql.store.getRoutes(storeId);
+      const openOrders = await db.runQuery(queryOrders);
 
       res.send({
-        routes: getRoutesResult,
-        openOrders: getOpenOrdersResult,
+        routes: routes,
+        openOrders: openOrders,
       });
     },
     setStart: async (req, res) => {

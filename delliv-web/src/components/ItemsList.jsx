@@ -6,6 +6,18 @@ import '../styles/ItemsList.css';
 import formatMoney from '../utils/format.js';
 
 function ItemsList({ items, selectedItems, onAddItemCount, onCreateOrder }) {
+  if (!items.length) {
+    return (
+      <>
+        <div className="orders-list-wraper">
+          <AreaHeader title={'Itens'} button={false}></AreaHeader>
+          <div className="empty-list-text">
+            Não há itens cadastrados para essa loja.
+          </div>
+        </div>
+      </>
+    );
+  }
   return (
     <>
       <div className="items-list-wraper">

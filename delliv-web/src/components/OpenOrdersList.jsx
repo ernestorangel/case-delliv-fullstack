@@ -17,12 +17,8 @@ function OpenOrdersList({
     return (
       <>
         <div className="open-orders-list-wraper">
-          <div className="open-orders-list-header">
-            <div className="open-orders-list-header-title">
-              Pedidos em aberto
-            </div>
-          </div>
-          <div className="open-orders-list">Não há pedidos em aberto.</div>
+          <AreaHeader title="Pedidos em aberto" button={false}></AreaHeader>
+          <div className="empty-list-text">Não há pedidos em aberto.</div>
         </div>
       </>
     );

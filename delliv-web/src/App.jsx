@@ -63,17 +63,20 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
           type: clientType,
         },
       });
+
       socket.on('delivery-person-accepted', async (routeId) => {
+        console.log('mamou');
         await axios
           .get(`${serverApiAddress}/store/get-routes/${store.id}`)
           .then((res) => {
-            console.log('deliveryPeople: ', res.data);
-            setRoutes(res.data);
+            console.log('routes res.data: ', res.data);
+            setRoutes([...res.data]);
           })
           .catch((err) => {
             console.log(err);
           });
       });
+
       setSocket(socket);
     }
   }, [store]);
@@ -89,15 +92,17 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   React.useEffect(() => {
     if (Object.keys(store).length)
-      axios.get(`${serverApiAddress}/get-all-items`).then((res) => {
-        setItems(res.data);
-      });
+      axios
+        .get(`${serverApiAddress}/store/get-items/${store.id}`)
+        .then((res) => {
+          setItems(res.data);
+        });
   }, [store]);
 
   React.useEffect(() => {
     if (Object.keys(store).length)
       axios
-        .get(`${serverApiAddress}/get-all-open-orders/${store.id}`)
+        .get(`${serverApiAddress}/store/get-open-orders/${store.id}`)
         .then((res) => {
           setOpenOrders(res.data);
         });
@@ -105,8 +110,8 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   const onCreateOrder = () => {
     axios
-      .post(`${serverApiAddress}/create-order`, {
-        idStore: store.id,
+      .post(`${serverApiAddress}/store/create-order`, {
+        storeId: store.id,
         items: selectedItems,
       })
       .then((res) => {
@@ -125,7 +130,18 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   // Emit
   const onRequestDeliveryPerson = () => {
-    socket.emit('request-delivery-person', store);
+    socket.emit('request-delivery-person', store, async (message) => {
+      console.log(message);
+      await axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+        .then((res) => {
+          console.log('routes res.data: ', res.data);
+          setRoutes(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
   };
 
   const onAddOrdersToDeliveryPerson = () => {};
@@ -178,7 +194,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     const onLogin = async (e, typedCredentials) => {
       e.preventDefault();
       await axios
-        .post(`${serverApiAddress}/login`, {
+        .post(`${serverApiAddress}/user/login`, {
           type: clientType,
           ...typedCredentials,
         })

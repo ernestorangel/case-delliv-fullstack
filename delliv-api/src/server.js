@@ -1,23 +1,20 @@
-const controller = require('./controller');
-const { user } = require('./controllers/user');
-const { store } = require('./controllers/store');
-const { deliveryPerson } = require('./controllers/deliveryPerson');
-const { route } = require('./controllers/route');
+const { user, store, deliveryPerson, route } = require('./controller');
 
 module.exports = {
   setEndpoints: (app) => {
     app.post('/user/login', user.login);
-    //app.post('/user/signup', user.create);
+    app.post('/user/signup', user.create);
 
-    app.get('/store/get-routes/:idStore', store.getRoutes);
-    app.get('/store/get-open-orders/:idStore', store.getOpenOrders);
-    app.get('/store/get-items/:idStore', store.getItems);
+    app.get('/store/get-routes/:storeId', store.getRoutes);
+    app.get('/store/get-open-orders/:storeId', store.getOpenOrders);
+    app.get('/store/get-items/:storeId', store.getItems);
     app.post('/store/create-order', store.createOrder);
     app.post('/store/create-item', store.createItem);
     app.delete('/store/delete-order', store.deleteOrder);
     //app.delete('/store/delete-item', store.deleteItem);
 
     app.get('/delivery-person/get-requests/:id', deliveryPerson.getRequests);
+    app.get('/delivery-person/get-route/:id', deliveryPerson.getRoute);
 
     app.post('/route/create', route.create);
     app.post('/route/set-delivery-person', route.setDeliveryPerson);

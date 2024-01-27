@@ -39,20 +39,3 @@
   overflow-y: auto;
   overflow-x: hidden;
 }
-
-/* .order-card {
-  width: 100%;
-
-  background-color: var(--foreground-color);
-
-  padding: 25px 25px;
-
-  margin-bottom: 10px;
-
-  border: var(--border);
-
-  border-radius: var(--card-border-radius);
-
-  display: flex;
-  flex-direction: row;
-} */

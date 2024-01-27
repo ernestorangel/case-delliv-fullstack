@@ -19,39 +19,43 @@ module.exports = {
 
       if (type == 'delivery-person') socket.join('delivery-people');
 
-      socket.on('request-delivery-person', async (store) => {
+      socket.on('request-delivery-person', async (store, cb) => {
         await axios
           .post(
             `http://${process.env.API_HOST}:${process.env.API_PORT}/route/create`,
             { storeId: store.id }
           )
           .then((res) => {
-            console.log(`A loja ${store.name} quer um entregador`);
+            console.log(
+              `A loja ${store.name} quer um entregador ${JSON.stringify(
+                res.data
+              )}`
+            );
 
             socket.to('delivery-people').emit('delivery-request', {
-              routeId: res.data.insertId,
+              routeId: res.data.insertId || res.data[0].id,
               storeSocketId: socket.id,
             });
+
+            cb(`requested ${socket.id}`);
           });
       });
 
       socket.on(
         'accept-store-request',
-        async (deliveryPersonId, routeId, storeSocketId) => {
+        async (deliveryPersonId, routeId, storeSocketId, cb) => {
           await axios
             .post(
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/set-delivery-person`,
               { routeId: routeId, deliveryPersonId: deliveryPersonId }
             )
             .then((res) => {
-              console.log(
-                'res.data accept-store-request: ',
-                res.data,
-                storeSocketId
-              );
+              console.log('aceitou', socket.id, storeSocketId);
               socket
                 .to(storeSocketId)
                 .emit('delivery-person-accepted', routeId);
+
+              cb('sentadão');
             });
         }
       );

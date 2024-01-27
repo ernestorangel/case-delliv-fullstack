@@ -1,18 +1,36 @@
+const DB_INFO = {
+  NAME: 'delliv_db',
+  TABLES: {
+    DELIVERY_PEOPLE: 'delivery_people',
+    ITEMS: 'items',
+    ORDERS: 'orders',
+    ORDERS_IN_ROUTE: 'orders_in_route',
+    ORDER_STATUS: 'order_status',
+    ROUTE_STATUS: 'route_status',
+    ROUTES: 'routes',
+    STORES: 'stores',
+  },
+};
+
 module.exports = {
   sql: {
     user: {
       getByUsername: (type, username) => {
-        let query = `
+        const DB_BY_USER = {
+          store: DB_INFO.TABLES.STORES,
+          'delivery-person': DB_INFO.TABLES.DELIVERY_PEOPLE,
+        };
+
+        return `
           SELECT *
-          FROM delliv_db.${type}
+          FROM ${DB_INFO.NAME}.${DB_BY_USER[`${type}`]}
           WHERE username = '${username}'
         `;
-        return query;
       },
       create: () => {
         // let query = `
         //   INSERT
-        //   INTO delliv_db.delivery_person
+        //   INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
         //   (
         //     name,
         //     login,
@@ -28,7 +46,7 @@ module.exports = {
         // return query;
         // let query = `
         //   INSERT
-        //   INTO delliv_db.store
+        //   INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.STORES}
         //   (
         //     name,
         //     username,
@@ -45,8 +63,8 @@ module.exports = {
       },
     },
     store: {
-      getRoutes: (idStore) => {
-        let query = `
+      getRoutes: (storeId) => {
+        return `
           SELECT 
           r.id AS routeId,
           dp.id AS deliveryPersonId,
@@ -56,78 +74,72 @@ module.exports = {
           o.quantity AS itemQuantity,
           i.sku AS itemSku,
           i.name AS itemName
-          FROM delliv_db.routes AS r
-          LEFT JOIN delliv_db.delivery_person AS dp
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} AS r
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.DELIVERY_PEOPLE} AS dp
           ON r.idDeliveryPerson = dp.id
-          LEFT JOIN delliv_db.route_status AS s
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTE_STATUS} AS s
           ON r.idStatus = s.id
-          LEFT JOIN delliv_db.orders_in_route AS oir
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS_IN_ROUTE} AS oir
           ON r.id = oir.idRoute
-          LEFT JOIN delliv_db.order AS o
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS} AS o
           ON oir.uuidOrder = o.uuid
-          LEFT JOIN delliv_db.item AS i
+          LEFT JOIN ${DB_INFO.NAME}.items AS i
           ON o.idItem = i.id
-          WHERE r.idStore = ${idStore}
+          WHERE r.idStore = ${storeId}
           AND r.idStatus != 6
         `;
-        return query;
       },
-      getOpenOrders: (idStore) => {
-        let query = `
+      getOpenOrders: (storeId) => {
+        return `
           SELECT 
           o.uuid,
           o.idItem,
           o.quantity,
           i.sku,
           i.name
-          FROM delliv_db.order AS o
-          LEFT JOIN delliv_db.item AS i
+          FROM ${DB_INFO.NAME}.orders AS o
+          LEFT JOIN ${DB_INFO.NAME}.items AS i
           ON o.idItem = i.id
-          WHERE o.idStore = ${idStore}
+          WHERE o.idStore = ${storeId}
+          AND o.idStatus = 0
         `;
-        return query;
       },
-      getItems: () => {
-        let query = `
-          SELECT
-          *
-          FROM delliv_db.item
+      getOpenRequests: (storeId) => {
+        return `
+          SELECT *
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
+          WHERE idStore = ${storeId}
+          AND idStatus = 0
         `;
-        return query;
       },
-      createOrder: () => {
+      getItems: (storeId) => {
+        return `
+          SELECT *
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ITEMS}
+          WHERE idStore = ${storeId}
+        `;
+      },
+      createOrder: (uuid, storeId, itemsArray) => {
         let values = [];
 
         for (const item of itemsArray) {
           values.push(
-            `(\'${uuid}\',\'${item.id}\', \'${idStore}\', \'${item.quantity}\' )`
+            `(\'${uuid}\',\'${item.id}\', \'${storeId}\', \'${item.quantity}\', 0 )`
           );
         }
 
-        let query = `
-          INSERT INTO delliv_db.order
-          (
-            uuid,
-            idItem,
-            idStore,
-            quantity
-          ) 
+        return `
+          INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS}
+          (uuid, idItem, idStore, quantity, idStatus) 
           VALUES
           ${values.join(',')}
         `;
-        return query;
       },
       createItem: () => {
         let query = `
           INSERT 
-          INTO delliv_db.item 
-          (
-            sku, 
-            name, 
-            price,
-            description,
-            idStore
-          ) 
+          INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ITEMS} 
+          (sku, name, price, description, idStore) 
           VALUES 
           (
             \'${params.sku}\', 
@@ -141,7 +153,7 @@ module.exports = {
       },
       deleteOrder: () => {
         let query = `
-          DELETE FROM delliv_db.order
+          DELETE FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS}
           WHERE idStore = ${idStore}
           AND uuid = \'${uuid}\'
         `;
@@ -149,34 +161,67 @@ module.exports = {
       },
       //deleteItem: () => {},
     },
+    order: {
+      updateStatus: (orders) => {
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS}
+          SET idStatus = 1
+          WHERE uuid IN ${orders}
+        `;
+      },
+    },
     deliveryPerson: {
       getRequests: (deliveryPersonId) => {
-        let query = `
+        return `
           SELECT 
           r.id AS idRoute,
           s.id AS idStore,
           s.name
-          FROM delliv_db.routes AS r
-          LEFT JOIN delliv_db.store AS s
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} AS r
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.STORES} AS s
           ON r.idStore = s.id
           WHERE idStatus = 0
         `;
-        return query;
+      },
+      getRoute: (deliveryPersonId) => {
+        return `
+          SELECT 
+          r.id AS routeId,
+          s.id AS storeId,
+          s.name AS storeName,
+          rs.status AS routeStatus,
+          o.uuid AS uuidOrder,
+          o.quantity AS itemQuantity,
+          i.sku AS itemSku,
+          i.name AS itemName
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} AS r
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.STORES} AS s
+          ON r.idStore = s.id
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTE_STATUS} AS rs
+          ON r.idStatus = rs.id
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS_IN_ROUTE} AS oir
+          ON r.id = oir.idRoute
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS} AS o
+          ON oir.uuidOrder = o.uuid
+          LEFT JOIN ${DB_INFO.NAME}.items AS i
+          ON o.idItem = i.id
+          WHERE r.idDeliveryPerson = ${deliveryPersonId}
+          AND r.idStatus IN (1, 2, 3, 4)
+        `;
       },
     },
     route: {
-      create: (storeId, status) => {
-        let query = `
-          INSERT INTO delliv_db.routes 
+      create: (storeId) => {
+        return `
+          INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} 
           (idStore, idStatus, storeRequestDatetime)
           VALUES
-          (\'${storeId}\', \'${status}\', NOW())
+          (\'${storeId}\', 0, NOW())
         `;
-        return query;
       },
       setDeliveryPerson: (routeId, deliveryPersonId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET 
           idDeliveryPerson = ${deliveryPersonId},
           idStatus = 1,
@@ -184,39 +229,34 @@ module.exports = {
           WHERE id = ${routeId}
           AND idStatus = 0
         `;
-        return query;
       },
       setDeliveryPersonArrival: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET deliveryPersonArrivalDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setArrivalConfirmation: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET storeArrivalConfirmationDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setLoad: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET storeLoadTime= NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setLoadConfirmation: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET deliveryPersonLoadConfirmationDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setOrders: (routeId, orders) => {
         let values = [];
@@ -225,40 +265,41 @@ module.exports = {
           values.push(`(\'${routeId}\',\'${uuid}\' )`);
         }
 
-        let query = `
-          INSERT INTO delliv_db.orders_in_route
-          (
-            idRoute,
-            uuidOrder
-          ) 
+        return `
+          INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS_IN_ROUTE}
+          (idRoute, uuidOrder) 
           VALUES
           ${values.join(',')}
         `;
-        return query;
       },
       setStart: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET routeStartDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setFinish: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET deliveryPersonFinishDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
       },
       setFinishConfirmation: (routeId) => {
-        let query = `
-          UPDATE delliv_db.routes
+        return `
+          UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
           SET storeFinishConfirmationDatetime = NOW()
           WHERE id = ${routeId}
         `;
-        return query;
+      },
+      getActiveStore: (deliveryPersonId) => {
+        return `
+          SELECT *
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
+          WHERE idDeliveryPerson = ${deliveryPersonId}
+          AND idStatus IN (1, 2, 3, 4)
+        `;
       },
     },
   },
