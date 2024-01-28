@@ -7,7 +7,6 @@ function OpenOrdersList({
   openOrders,
   onSelectOrder,
   onAddOrdersToRoute,
-  onDeleteOpenOrder,
   onDeleteOrder,
 }) {
   if (!openOrders.length) {
@@ -39,7 +38,7 @@ function OpenOrdersList({
               key={order.uuid}
               order={order}
               onSelectOrder={onSelectOrder}
-              onDeleteOpenOrder={onDeleteOpenOrder}
+              onDeleteOrder={onDeleteOrder}
             ></OrderCard>
           ))}
         </div>

@@ -15,6 +15,7 @@ function AppContent({
   onSelectDeliveryPerson,
   onSelectOrder,
   onAddOrdersToRoute,
+  onLoadOrders,
   onDeleteOpenOrder,
   onAddItemCount,
   onCreateOrder,
@@ -29,7 +30,10 @@ function AppContent({
           onSelectDeliveryPerson={onSelectDeliveryPerson}
           onRequestDeliveryPerson={onRequestDeliveryPerson}
         ></DeliveryPersonList>
-        <OrdersList selectedRoute={selectedRoute}></OrdersList>
+        <OrdersList
+          selectedRoute={selectedRoute}
+          onLoadOrders={onLoadOrders}
+        ></OrdersList>
         <OpenOrdersList
           openOrders={openOrders}
           onSelectOrder={onSelectOrder}

@@ -3,7 +3,7 @@ import '../styles/OrdersList.css';
 import AreaHeader from './AreaHeader';
 import OrderCard from './OrderCard';
 
-function OrdersList({ selectedRoute }) {
+function OrdersList({ selectedRoute, onLoadOrders }) {
   if (!Object.keys(selectedRoute).length) {
     return (
       <>
@@ -49,7 +49,11 @@ function OrdersList({ selectedRoute }) {
               ? `Pedidos com ${selectedRoute.deliveryPersonName}`
               : 'Pedidos com Entregador'
           }
-          button={false}
+          button={{
+            icon: 'src/assets/images/icons/mais.png',
+            text: 'Carregar',
+            onClick: onLoadOrders,
+          }}
         ></AreaHeader>
         <div className="orders-list">
           {selectedRoute.orders.map((order) => (

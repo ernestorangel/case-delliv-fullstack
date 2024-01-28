@@ -241,6 +241,9 @@ module.exports = {
       const querySet = sql.route.setOrders(routeId, orders);
       const setOrdersResult = await db.runQuery(querySet);
 
+      const queryRouteStatus = sql.route.setLoad(routeId);
+      const routeStatusResult = await db.runQuery(queryRouteStatus);
+
       const queryUpdate = sql.order.updateStatus(orders);
       const updateResult = await db.runQuery(queryUpdate);
 

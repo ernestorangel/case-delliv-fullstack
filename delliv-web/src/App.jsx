@@ -1,49 +1,24 @@
-// Import CSS
 import './styles/App.css';
-
-// Import Custom Components
 import Login from './components/Login';
 import Toast from './components/Toast';
 import AppBar from './components/AppBar';
 import AppContent from './components/AppContent';
-
-// Import libraries
 import axios from 'axios';
 import React from 'react';
 import { io } from 'socket.io-client';
 
 function App({ serverApiAddress, serverSocketAddress, clientType }) {
-  // Toast State
   const [toastType, setToastType] = React.useState();
   const [toastMessage, setToastMessage] = React.useState();
-
-  // Store State
   const [store, setStore] = React.useState({});
-
-  // Socket State
   const [socket, setSocket] = React.useState({});
-
-  // Orders State
   const [openOrders, setOpenOrders] = React.useState([]);
-  const [specificOrders, setSpecificOrders] = React.useState([]);
   const [selectedOpenOrders, setSelectedOpenOrders] = React.useState([]);
-  const [selectedOpenOrder, setSelectedOpenOrder] = React.useState({});
-
-  // Items State
   const [items, setItems] = React.useState([]);
   const [selectedItems, setSelectedItems] = React.useState({});
-
-  // Delivery People State
-  // const [deliveryPeople, setDeliveryPeople] = React.useState([]);
-  // const [selectedDeliveryPerson, setSelectedDeliveryPerson] = React.useState(
-  //   {}
-  // );
-
-  // Routes State
   const [routes, setRoutes] = React.useState([]);
   const [selectedRoute, setSelectedRoute] = React.useState({});
 
-  // Toast methods
   const showToast = (type, message) => {
     setToastType(type);
     setToastMessage(message);
@@ -159,7 +134,6 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     }
   }, [store]);
 
-  // Emit
   const onRequestDeliveryPerson = () => {
     socket.emit('request-delivery-person', store.id, async (message) => {
       console.log(message);
@@ -187,7 +161,23 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     });
   };
 
-  const onAddOrdersToDeliveryPerson = () => {};
+  const onLoadOrders = async () => {
+    await axios
+      .post(`${serverApiAddress}/route/set-orders`, {
+        routeId: selectedRoute.routeId,
+        storeId: store.id,
+        orders: selectedOpenOrders,
+      })
+      .then((res) => {
+        setRoutes(res.data.routes);
+        setSelectedRoute(
+          res.data.routes.filter(
+            (route) => route.routeId == selectedRoute.routeId
+          )[0]
+        );
+        setOpenOrders(res.data.openOrders);
+      });
+  };
 
   const onLoaded = (e, routeId) => {
     socket.emit('loaded', routeId, async (res) => {
@@ -245,25 +235,31 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       setSelectedOpenOrders([...selectedOpenOrders.filter((id) => id != uuid)]);
   };
 
-  const onAddOrdersToRoute = async () => {
-    await axios
-      .post(`${serverApiAddress}/route/set-orders`, {
-        routeId: selectedRoute.routeId,
-        storeId: store.id,
-        orders: selectedOpenOrders,
-      })
-      .then((res) => {
-        setRoutes(res.data.routes);
-        setSelectedRoute(
-          res.data.routes.filter(
-            (route) => route.routeId == selectedRoute.routeId
-          )[0]
-        );
-        setOpenOrders(res.data.openOrders);
-      });
-  };
+  const onAddOrdersToRoute = () => {
+    console.log('routes: ', routes);
+    console.log('selectedRoute: ', selectedRoute);
+    console.log('openOrders: ', openOrders);
+    console.log('selectedOpenOrders: ', selectedOpenOrders);
 
-  const onDeleteOpenOrder = (e, uuid) => {};
+    setOpenOrders([
+      ...openOrders.filter(
+        (order) => !selectedOpenOrders.find((uuid) => order.uuid == uuid)
+      ),
+    ]);
+
+    setRoutes([
+      ...routes.map((route) => {
+        if (route.routeId == selectedRoute.routeId) {
+          route.orders.push(
+            openOrders.filter((order) =>
+              selectedOpenOrders.find((uuid) => order.uuid == uuid)
+            )
+          );
+          return route;
+        }
+      }),
+    ]);
+  };
 
   const onSelectDeliveryPerson = (e, route) => {
     setSelectedRoute(route);
@@ -319,10 +315,10 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         onSelectDeliveryPerson={onSelectDeliveryPerson}
         onSelectOrder={onSelectOrder}
         onAddOrdersToRoute={onAddOrdersToRoute}
-        onDeleteOpenOrder={onDeleteOpenOrder}
+        onLoadOrders={onLoadOrders}
+        onDeleteOrder={onDeleteOrder}
         onAddItemCount={onAddItemCount}
         onCreateOrder={onCreateOrder}
-        onDeleteOrder={onDeleteOrder}
       ></AppContent>
     </>
   );
