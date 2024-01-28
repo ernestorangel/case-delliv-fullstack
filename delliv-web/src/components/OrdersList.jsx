@@ -3,7 +3,7 @@ import '../styles/OrdersList.css';
 import AreaHeader from './AreaHeader';
 import OrderCard from './OrderCard';
 
-function OrdersList({ selectedRoute, specificOrders, selectedDeliveryPerson }) {
+function OrdersList({ selectedRoute }) {
   console.log('selectedRoute: ', selectedRoute);
   if (!Object.keys(selectedRoute).length) {
     return (

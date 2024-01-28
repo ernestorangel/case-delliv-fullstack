@@ -100,7 +100,51 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         },
       });
 
-      socket.on('delivery-person-accepted', async (routeId) => {
+      socket.on('request-accepted', async () => {
+        await axios
+          .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+          .then((res) => {
+            setRoutes([...res.data]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      socket.on('delivery-person-arrived', async () => {
+        await axios
+          .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+          .then((res) => {
+            setRoutes([...res.data]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      socket.on('load-confirmed', async () => {
+        await axios
+          .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+          .then((res) => {
+            setRoutes([...res.data]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      socket.on('route-started', async () => {
+        await axios
+          .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+          .then((res) => {
+            setRoutes([...res.data]);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      socket.on('delivery-person-finished', async () => {
         await axios
           .get(`${serverApiAddress}/store/get-routes/${store.id}`)
           .then((res) => {
@@ -122,8 +166,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       await axios
         .get(`${serverApiAddress}/store/get-routes/${store.id}`)
         .then((res) => {
-          console.log('routes res.data: ', res.data);
-          setRoutes(res.data);
+          setRoutes([...res.data]);
         })
         .catch((err) => {
           console.log(err);
@@ -269,21 +312,14 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       <Toast type={toastType} message={toastMessage}></Toast>
       <AppBar store={store}></AppBar>
       <AppContent
-        deliveryPeople={deliveryPeople}
         routes={routes}
         selectedRoute={selectedRoute}
-        selectedDeliveryPerson={selectedDeliveryPerson}
-        specificOrders={specificOrders}
         openOrders={openOrders}
-        selectedOpenOrder={selectedOpenOrder}
         items={items}
         selectedItems={selectedItems}
         onRequestDeliveryPerson={onRequestDeliveryPerson}
         onSelectDeliveryPerson={onSelectDeliveryPerson}
-        onAddOrdersToRoute={onAddOrdersToRoute}
         onDeleteOpenOrder={onDeleteOpenOrder}
-        onSelectOrder={onSelectOrder}
-        onAddOrdersToDeliveryPerson={onAddOrdersToDeliveryPerson}
         onAddItemCount={onAddItemCount}
         onCreateOrder={onCreateOrder}
         onDeleteOrder={onDeleteOrder}

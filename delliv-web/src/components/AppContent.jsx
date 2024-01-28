@@ -6,13 +6,9 @@ import OpenOrdersList from './OpenOrdersList';
 import ItemsList from './ItemsList';
 
 function AppContent({
-  deliveryPeople,
   routes,
   selectedRoute,
-  selectedDeliveryPerson,
-  specificOrders,
   openOrders,
-  selectedOpenOrder,
   items,
   selectedItems,
   onRequestDeliveryPerson,
@@ -20,7 +16,6 @@ function AppContent({
   onSelectOrder,
   onAddOrdersToRoute,
   onDeleteOpenOrder,
-  onAddOrdersToDeliveryPerson,
   onAddItemCount,
   onCreateOrder,
   onDeleteOrder,
@@ -29,26 +24,17 @@ function AppContent({
     <>
       <div className="app-content">
         <DeliveryPersonList
-          deliveryPeople={deliveryPeople}
           routes={routes}
           selectedRoute={selectedRoute}
-          selectedDeliveryPerson={selectedDeliveryPerson}
           onSelectDeliveryPerson={onSelectDeliveryPerson}
           onRequestDeliveryPerson={onRequestDeliveryPerson}
         ></DeliveryPersonList>
-        <OrdersList
-          selectedRoute={selectedRoute}
-          specificOrders={specificOrders}
-          selectedDeliveryPerson={selectedDeliveryPerson}
-        ></OrdersList>
+        <OrdersList selectedRoute={selectedRoute}></OrdersList>
         <OpenOrdersList
           openOrders={openOrders}
           onSelectOrder={onSelectOrder}
           onAddOrdersToRoute={onAddOrdersToRoute}
           onDeleteOpenOrder={onDeleteOpenOrder}
-          selectedOpenOrder={selectedOpenOrder}
-          onAddOrdersToDeliveryPerson={onAddOrdersToDeliveryPerson}
-          selectedDeliveryPerson={selectedDeliveryPerson}
           onDeleteOrder={onDeleteOrder}
         ></OpenOrdersList>
         <ItemsList

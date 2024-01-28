@@ -8,9 +8,6 @@ function OpenOrdersList({
   onSelectOrder,
   onAddOrdersToRoute,
   onDeleteOpenOrder,
-  selectedOpenOrder,
-  onAddOrdersToDeliveryPerson,
-  selectedDeliveryPerson,
   onDeleteOrder,
 }) {
   if (!openOrders.length) {

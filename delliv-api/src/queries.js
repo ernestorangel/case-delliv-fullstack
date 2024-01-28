@@ -65,6 +65,15 @@ module.exports = {
       },
     },
     store: {
+      setSocket: (storeId, socketId) => {
+        return `
+          INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.STORE_SOCKET_ID}
+          (id, idSocket)
+          VALUES 
+          (\'${storeId}\', \'${socketId}\')
+          ON DUPLICATE KEY UPDATE idSocket = \'${socketId}\'
+        `;
+      },
       getRoutes: (storeId) => {
         return `
           SELECT 
@@ -173,6 +182,15 @@ module.exports = {
       },
     },
     deliveryPerson: {
+      setSocket: (deliveryPersonId, socketId) => {
+        return `
+          INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.DELIVERY_PERSON_SOCKET_ID}
+          (id, idSocket)
+          VALUES 
+          (\'${deliveryPersonId}\', \'${socketId}\')
+          ON DUPLICATE KEY UPDATE idSocket = \'${deliveryPersonId}\'
+        `;
+      },
       getRequests: (deliveryPersonId) => {
         return `
           SELECT 
@@ -262,8 +280,11 @@ module.exports = {
       setArrivalConfirmation: (routeId) => {
         return `
           UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
-          SET storeArrivalConfirmationDatetime = NOW()
+          SET
+          idStatus = 2,
+          storeArrivalConfirmationDatetime = NOW()
           WHERE id = ${routeId}
+          AND idStatus = 1
         `;
       },
       setLoad: (routeId) => {
@@ -276,8 +297,11 @@ module.exports = {
       setLoadConfirmation: (routeId) => {
         return `
           UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
-          SET deliveryPersonLoadConfirmationDatetime = NOW()
+          SET 
+          idStatus = 3,
+          deliveryPersonLoadConfirmationDatetime = NOW()
           WHERE id = ${routeId}
+          AND idStatus = 2
         `;
       },
       setOrders: (routeId, orders) => {
@@ -297,8 +321,11 @@ module.exports = {
       setStart: (routeId) => {
         return `
           UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
-          SET routeStartDatetime = NOW()
+          SET
+          idStatus = 4,
+          routeStartDatetime = NOW()
           WHERE id = ${routeId}
+          AND idStatus = 3
         `;
       },
       setFinish: (routeId) => {
@@ -311,8 +338,11 @@ module.exports = {
       setFinishConfirmation: (routeId) => {
         return `
           UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES}
-          SET storeFinishConfirmationDatetime = NOW()
+          SET
+          idStatus = 5,
+          storeFinishConfirmationDatetime = NOW()
           WHERE id = ${routeId}
+          AND idStatus = 4
         `;
       },
       getActiveStore: (deliveryPersonId) => {

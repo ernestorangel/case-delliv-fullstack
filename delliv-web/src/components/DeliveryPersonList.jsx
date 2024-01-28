@@ -5,10 +5,8 @@ import AreaHeader from './AreaHeader';
 import '../styles/DeliveryPersonList.css';
 
 function DeliveryPersonList({
-  deliveryPeople,
   routes,
   selectedRoute,
-  selectedDeliveryPerson,
   onSelectDeliveryPerson,
   onRequestDeliveryPerson,
 }) {

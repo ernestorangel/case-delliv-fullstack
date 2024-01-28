@@ -32,8 +32,8 @@ module.exports = {
     app.post('/route/set-finish', route.setFinish);
     app.post('/route/set-finish-confirmation', route.setFinishConfirmation);
 
-    app.post('/store/socket/set');
-    app.post('/delivery-person/socket/set');
+    app.post('/store/socket/set', store.setSocket);
+    app.post('/delivery-person/socket/set', deliveryPerson.setSocket);
 
     return app;
   },

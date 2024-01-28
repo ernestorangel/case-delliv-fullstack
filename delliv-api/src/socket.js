@@ -12,10 +12,11 @@ const setSocketResponses = {
         { storeId, socketId: socket.id }
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.status);
       })
       .catch((err) => {
-        console.log(err);
+        const { code, response } = err;
+        console.log(code, response.data);
       });
 
     socket.on('request-delivery-person', async (storeId, clientFeedback) => {
@@ -25,11 +26,12 @@ const setSocketResponses = {
           { storeId }
         )
         .then((res) => {
-          socket.to('delivery-people').emit('delivery-request', res);
+          socket.to('delivery-people').emit('delivery-request');
           clientFeedback(res);
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -46,12 +48,13 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-delivery-person-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('arrival-confirmed');
+              socket.to(res.data).emit('arrival-confirmation');
               clientFeedback(res);
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -73,7 +76,8 @@ const setSocketResponses = {
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -90,12 +94,13 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-delivery-person-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('finish-confirmed');
+              socket.to(res.data).emit('finish-confirmation');
               clientFeedback(res);
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -108,10 +113,11 @@ const setSocketResponses = {
         { deliveryPersonId, socketId: socket.id }
       )
       .then((res) => {
-        console.log(res);
+        console.log(res.status);
       })
       .catch((err) => {
-        console.log(err);
+        const { code, response } = err;
+        console.log(code, response.data);
       });
 
     socket.join('delivery-people');
@@ -136,7 +142,8 @@ const setSocketResponses = {
               });
           })
           .catch((err) => {
-            clientFeedback(err);
+            const { code, response } = err;
+            clientFeedback({ code, data: response.data });
           });
       }
     );
@@ -159,7 +166,8 @@ const setSocketResponses = {
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -181,7 +189,8 @@ const setSocketResponses = {
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -203,7 +212,8 @@ const setSocketResponses = {
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
@@ -225,7 +235,8 @@ const setSocketResponses = {
             });
         })
         .catch((err) => {
-          clientFeedback(err);
+          const { code, response } = err;
+          clientFeedback({ code, data: response.data });
         });
     });
 
