@@ -9,6 +9,8 @@ const DB_INFO = {
     ROUTE_STATUS: 'route_status',
     ROUTES: 'routes',
     STORES: 'stores',
+    STORE_SOCKET_ID: 'store_socket_id',
+    DELIVERY_PERSON_SOCKET_ID: 'delivery_person_socket_id',
   },
 };
 
@@ -211,6 +213,26 @@ module.exports = {
       },
     },
     route: {
+      getStoreSocket: (routeId) => {
+        return `
+          SELECT
+          sid.idSocket
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} AS r
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.STORE_SOCKET_ID} AS sid
+          ON r.idStore = sid.id
+          WHERE r.id = ${routeId}
+        `;
+      },
+      getDeliveryPersonSocket: (routeId) => {
+        return `
+          SELECT
+          sid.idSocket
+          FROM ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} AS r
+          LEFT JOIN ${DB_INFO.NAME}.${DB_INFO.TABLES.DELIVERY_PERSON_SOCKET_ID} AS sid
+          ON r.idDeliveryPerson = sid.id
+          WHERE r.id = ${routeId}
+        `;
+      },
       create: (storeId) => {
         return `
           INSERT INTO ${DB_INFO.NAME}.${DB_INFO.TABLES.ROUTES} 

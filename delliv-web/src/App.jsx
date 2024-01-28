@@ -34,10 +34,10 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   const [selectedItems, setSelectedItems] = React.useState({});
 
   // Delivery People State
-  const [deliveryPeople, setDeliveryPeople] = React.useState([]);
-  const [selectedDeliveryPerson, setSelectedDeliveryPerson] = React.useState(
-    {}
-  );
+  // const [deliveryPeople, setDeliveryPeople] = React.useState([]);
+  // const [selectedDeliveryPerson, setSelectedDeliveryPerson] = React.useState(
+  //   {}
+  // );
 
   // Routes State
   const [routes, setRoutes] = React.useState([]);
@@ -54,22 +54,56 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     setToastMessage(undefined);
   };
 
-  // Connect to WebSocket on Login
+  React.useEffect(() => {
+    if (Object.keys(store).length)
+      axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+        .then((res) => {
+          setRoutes([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [store]);
+
+  React.useEffect(() => {
+    if (Object.keys(store).length)
+      axios
+        .get(`${serverApiAddress}/store/get-items/${store.id}`)
+        .then((res) => {
+          setItems([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [store]);
+
+  React.useEffect(() => {
+    if (Object.keys(store).length)
+      axios
+        .get(`${serverApiAddress}/store/get-open-orders/${store.id}`)
+        .then((res) => {
+          setOpenOrders([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [store]);
+
   React.useEffect(() => {
     if (Object.keys(store).length) {
       const socket = io(serverSocketAddress, {
         transports: ['websocket'],
         query: {
           type: clientType,
+          id: store.id,
         },
       });
 
       socket.on('delivery-person-accepted', async (routeId) => {
-        console.log('mamou');
         await axios
           .get(`${serverApiAddress}/store/get-routes/${store.id}`)
           .then((res) => {
-            console.log('routes res.data: ', res.data);
             setRoutes([...res.data]);
           })
           .catch((err) => {
@@ -81,32 +115,62 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     }
   }, [store]);
 
-  React.useEffect(() => {
-    if (Object.keys(store).length)
-      axios
+  // Emit
+  const onRequestDeliveryPerson = () => {
+    socket.emit('request-delivery-person', store.id, async (message) => {
+      console.log(message);
+      await axios
         .get(`${serverApiAddress}/store/get-routes/${store.id}`)
         .then((res) => {
+          console.log('routes res.data: ', res.data);
           setRoutes(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-  }, [store]);
+    });
+  };
 
-  React.useEffect(() => {
-    if (Object.keys(store).length)
-      axios
-        .get(`${serverApiAddress}/store/get-items/${store.id}`)
+  const onConfirmArrival = (e, routeId) => {
+    socket.emit('confirm-arrival', routeId, async (res) => {
+      await axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
         .then((res) => {
-          setItems(res.data);
+          setRoutes([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-  }, [store]);
+    });
+  };
 
-  React.useEffect(() => {
-    if (Object.keys(store).length)
-      axios
-        .get(`${serverApiAddress}/store/get-open-orders/${store.id}`)
+  const onAddOrdersToDeliveryPerson = () => {};
+
+  const onLoaded = (e, routeId) => {
+    socket.emit('loaded', routeId, async (res) => {
+      await axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
         .then((res) => {
-          setOpenOrders(res.data);
+          setRoutes([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
         });
-  }, [store]);
+    });
+  };
+
+  const onConfirmFinish = (e, routeId) => {
+    socket.emit('confirm-finish', routeId, async (res) => {
+      await axios
+        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
+        .then((res) => {
+          setRoutes([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  };
 
   const onCreateOrder = () => {
     axios
@@ -127,24 +191,6 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         setOpenOrders(res.data);
       });
   };
-
-  // Emit
-  const onRequestDeliveryPerson = () => {
-    socket.emit('request-delivery-person', store, async (message) => {
-      console.log(message);
-      await axios
-        .get(`${serverApiAddress}/store/get-routes/${store.id}`)
-        .then((res) => {
-          console.log('routes res.data: ', res.data);
-          setRoutes(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    });
-  };
-
-  const onAddOrdersToDeliveryPerson = () => {};
 
   const onSelectOrder = (e, uuid, isChecked) => {
     const found = selectedOpenOrders.find((id) => uuid == id);

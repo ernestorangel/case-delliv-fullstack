@@ -16,6 +16,11 @@ module.exports = {
     app.get('/delivery-person/get-requests/:id', deliveryPerson.getRequests);
     app.get('/delivery-person/get-route/:id', deliveryPerson.getRoute);
 
+    app.get('/route/get-store-socket-id/:routeId', route.getStoreSocket);
+    app.get(
+      '/route/get-delivery-person-socket-id/:routeId',
+      route.getDeliveryPersonSocket
+    );
     app.post('/route/create', route.create);
     app.post('/route/set-delivery-person', route.setDeliveryPerson);
     app.post('/route/set-arrival', route.setDeliveryPersonArrival);
@@ -26,6 +31,9 @@ module.exports = {
     app.post('/route/set-start', route.setStart);
     app.post('/route/set-finish', route.setFinish);
     app.post('/route/set-finish-confirmation', route.setFinishConfirmation);
+
+    app.post('/store/socket/set');
+    app.post('/delivery-person/socket/set');
 
     return app;
   },

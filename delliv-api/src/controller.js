@@ -129,6 +129,8 @@ module.exports = {
       res.send(result_2);
     },
     //deleteItem: async (req, res) => {},
+    getSocket: async (req, res) => {},
+    setSocket: async (req, res) => {},
   },
   deliveryPerson: {
     getRequests: async (req, res) => {
@@ -149,20 +151,42 @@ module.exports = {
 
       res.send(result);
     },
+    getSocket: async (req, res) => {},
+    setSocket: async (req, res) => {},
   },
   route: {
+    getStoreSocket: async (req, res) => {
+      const { routeId } = req.params;
+
+      const query = sql.route.getStoreSocket(routeId);
+      const storeSocketId = await db.runQuery(query)[0];
+
+      res.send(storeSocketId);
+    },
+    getDeliveryPersonSocket: async (req, res) => {
+      const { routeId } = req.params;
+
+      const query = sql.route.getDeliveryPersonSocket(routeId);
+      const deliveryPersonSocketId = await db.runQuery(query)[0];
+
+      res.send(deliveryPersonSocketId);
+    },
     create: async (req, res) => {
-      const { storeId } = req.body;
+      try {
+        const { storeId } = req.body;
 
-      const storeSql = sql.store.getOpenRequests(storeId);
-      const openRequests = await db.runQuery(storeSql);
-      console.log('openRequests: ', openRequests);
-      if (openRequests.length) return res.status(200).send(openRequests);
+        const storeSql = sql.store.getOpenRequests(storeId);
+        const openRequests = await db.runQuery(storeSql);
 
-      const query = sql.route.create(storeId);
-      const result = await db.runQuery(query);
+        if (openRequests.length > 1) return res.status(500);
+        if (openRequests.length == 1) return res.send(openRequests[0].id);
 
-      res.send(result);
+        const query = sql.route.create(storeId);
+        const result = await db.runQuery(query);
+        res.send(result.insertId);
+      } catch (err) {
+        res.status(500);
+      }
     },
     setDeliveryPerson: async (req, res) => {
       const { routeId, deliveryPersonId } = req.body;
