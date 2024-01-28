@@ -12,11 +12,10 @@ const setSocketResponses = {
         { storeId, socketId: socket.id }
       )
       .then((res) => {
-        console.log(res.status);
+        console.log(res.data);
       })
       .catch((err) => {
-        const { code, response } = err;
-        console.log(code, response.data);
+        console.log(err.response.data);
       });
 
     socket.on('request-delivery-person', async (storeId, clientFeedback) => {
@@ -27,12 +26,11 @@ const setSocketResponses = {
         )
         .then((res) => {
           socket.to('delivery-people').emit('delivery-request');
-          clientFeedback(res);
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('confirm-arrival', async (routeId, clientFeedback) => {
@@ -49,13 +47,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('arrival-confirmation');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('loaded', async (routeId, clientFeedback) => {
@@ -72,13 +69,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('store-loaded');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('confirm-finish', async (routeId, clientFeedback) => {
@@ -95,32 +91,30 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('finish-confirmation');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     return socket;
   },
   'delivery-person': (socket, deliveryPersonId) => {
+    socket.join('delivery-people');
+
     axios
       .post(
         `http://${process.env.API_HOST}:${process.env.API_PORT}/delivery-person/socket/set`,
         { deliveryPersonId, socketId: socket.id }
       )
       .then((res) => {
-        console.log(res.status);
+        console.log(res.data);
       })
       .catch((err) => {
-        const { code, response } = err;
-        console.log(code, response.data);
+        console.log(err.response.data);
       });
-
-    socket.join('delivery-people');
 
     socket.on(
       'accept-store-request',
@@ -138,13 +132,12 @@ const setSocketResponses = {
               )
               .then((res) => {
                 socket.to(res.data).emit('request-accepted');
-                clientFeedback(res);
               });
           })
           .catch((err) => {
-            const { code, response } = err;
-            clientFeedback({ code, data: response.data });
+            console.log(err);
           });
+        clientFeedback();
       }
     );
 
@@ -162,13 +155,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('delivery-person-arrived');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('confirm-load', async (routeId, clientFeedback) => {
@@ -185,13 +177,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('load-confirmed');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('start-route', async (routeId, clientFeedback) => {
@@ -208,13 +199,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('route-started');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     socket.on('signal-finish', async (routeId, clientFeedback) => {
@@ -231,13 +221,12 @@ const setSocketResponses = {
             )
             .then((res) => {
               socket.to(res.data).emit('delivery-person-finished');
-              clientFeedback(res);
             });
         })
         .catch((err) => {
-          const { code, response } = err;
-          clientFeedback({ code, data: response.data });
+          console.log(err);
         });
+      clientFeedback();
     });
 
     return socket;

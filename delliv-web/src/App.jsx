@@ -253,7 +253,6 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         orders: selectedOpenOrders,
       })
       .then((res) => {
-        console.log('onAddOrdersToRoute res.data: ', res.data);
         setRoutes(res.data.routes);
         setSelectedRoute(
           res.data.routes.filter(
@@ -267,7 +266,6 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   const onDeleteOpenOrder = (e, uuid) => {};
 
   const onSelectDeliveryPerson = (e, route) => {
-    //setSelectedDeliveryPerson(deliveryPerson);
     setSelectedRoute(route);
   };
 
@@ -319,6 +317,8 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         selectedItems={selectedItems}
         onRequestDeliveryPerson={onRequestDeliveryPerson}
         onSelectDeliveryPerson={onSelectDeliveryPerson}
+        onSelectOrder={onSelectOrder}
+        onAddOrdersToRoute={onAddOrdersToRoute}
         onDeleteOpenOrder={onDeleteOpenOrder}
         onAddItemCount={onAddItemCount}
         onCreateOrder={onCreateOrder}

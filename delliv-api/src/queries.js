@@ -177,7 +177,7 @@ module.exports = {
         return `
           UPDATE ${DB_INFO.NAME}.${DB_INFO.TABLES.ORDERS}
           SET idStatus = 1
-          WHERE uuid IN ${orders}
+          WHERE uuid IN (${orders.map((uuid) => `'${uuid}'`).join()})
         `;
       },
     },
@@ -188,10 +188,10 @@ module.exports = {
           (id, idSocket)
           VALUES 
           (\'${deliveryPersonId}\', \'${socketId}\')
-          ON DUPLICATE KEY UPDATE idSocket = \'${deliveryPersonId}\'
+          ON DUPLICATE KEY UPDATE idSocket = \'${socketId}\'
         `;
       },
-      getRequests: (deliveryPersonId) => {
+      getRequests: () => {
         return `
           SELECT 
           r.id AS idRoute,

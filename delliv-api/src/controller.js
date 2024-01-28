@@ -179,11 +179,12 @@ module.exports = {
         const openRequests = await db.runQuery(storeSql);
 
         if (openRequests.length > 1) return res.status(500).send();
-        if (openRequests.length == 1) return res.send(openRequests[0].id);
+        if (openRequests.length == 1)
+          return res.status(200).send(`${openRequests[0].id}`);
 
         const query = sql.route.create(storeId);
         const result = await db.runQuery(query);
-        res.send(result.insertId);
+        res.status(200).send(`${result.insertId}`);
       } catch (err) {
         res.status(500).send();
       }
@@ -246,8 +247,8 @@ module.exports = {
       const queryRoutes = sql.store.getRoutes(storeId);
       const routes = data.groupOrdersByRoute(await db.runQuery(queryRoutes));
 
-      const queryOrders = sql.store.getRoutes(storeId);
-      const openOrders = await db.runQuery(queryOrders);
+      const queryOrders = sql.store.getOpenOrders(storeId);
+      const openOrders = data.groupOrders(await db.runQuery(queryOrders));
 
       res.send({
         routes: routes,
