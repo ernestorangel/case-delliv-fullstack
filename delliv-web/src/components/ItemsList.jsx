@@ -3,7 +3,7 @@ import React from 'react';
 import AreaHeader from './AreaHeader.jsx';
 
 import '../styles/ItemsList.css';
-import formatMoney from '../utils/format.js';
+import { formatMoney } from '../utils/format.js';
 
 function ItemsList({ items, selectedItems, onAddItemCount, onCreateOrder }) {
   if (!items.length) {

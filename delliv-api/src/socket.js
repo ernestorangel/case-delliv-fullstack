@@ -6,6 +6,7 @@ dotenv.config();
 
 const setSocketResponses = {
   store: (socket, storeId) => {
+    console.log(`store ${storeId} connected at ${socket.id}`);
     axios
       .post(
         `http://${process.env.API_HOST}:${process.env.API_PORT}/store/socket/set`,
@@ -46,7 +47,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-delivery-person-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('arrival-confirmation');
+              socket.to(res.data[0].idSocket).emit('arrival-confirmation');
             });
         })
         .catch((err) => {
@@ -68,7 +69,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-delivery-person-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('store-loaded');
+              socket.to(res.data[0].idSocket).emit('store-loaded');
             });
         })
         .catch((err) => {
@@ -90,7 +91,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-delivery-person-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('finish-confirmation');
+              socket.to(res.data[0].idSocket).emit('finish-confirmation');
             });
         })
         .catch((err) => {
@@ -125,13 +126,15 @@ const setSocketResponses = {
             { routeId: routeId, deliveryPersonId: deliveryPersonId }
           )
           .then(async (res) => {
+            console.log('accept res.data out: ', res.data);
             if (!res.data) return;
             await axios
               .get(
                 `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-store-socket-id/${routeId}`
               )
               .then((res) => {
-                socket.to(res.data).emit('request-accepted');
+                console.log('accept res.data in: ', res.data);
+                socket.to(res.data[0].idSocket).emit('request-accepted');
               });
           })
           .catch((err) => {
@@ -154,7 +157,8 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-store-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('delivery-person-arrived');
+              console.log('res.data: ', res.data);
+              socket.to(res.data[0].idSocket).emit('delivery-person-arrived');
             });
         })
         .catch((err) => {
@@ -176,7 +180,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-store-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('load-confirmed');
+              socket.to(res.data[0].idSocket).emit('load-confirmed');
             });
         })
         .catch((err) => {
@@ -198,7 +202,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-store-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('route-started');
+              socket.to(res.data[0].idSocket).emit('route-started');
             });
         })
         .catch((err) => {
@@ -220,7 +224,7 @@ const setSocketResponses = {
               `http://${process.env.API_HOST}:${process.env.API_PORT}/route/get-store-socket-id/${routeId}`
             )
             .then((res) => {
-              socket.to(res.data).emit('delivery-person-finished');
+              socket.to(res.data[0].idSocket).emit('delivery-person-finished');
             });
         })
         .catch((err) => {

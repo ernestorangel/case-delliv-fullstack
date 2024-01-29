@@ -1,7 +1,7 @@
 import '../styles/OrdersList.css';
-
 import AreaHeader from './AreaHeader';
 import OrderCard from './OrderCard';
+import { camelCaseToRegular } from '../utils/format';
 
 function OrdersList({ selectedRoute, onLoadOrders }) {
   if (!Object.keys(selectedRoute).length) {
@@ -46,7 +46,7 @@ function OrdersList({ selectedRoute, onLoadOrders }) {
         <AreaHeader
           title={
             selectedRoute.deliveryPersonName
-              ? `Pedidos com ${selectedRoute.deliveryPersonName}`
+              ? `${camelCaseToRegular(selectedRoute.routeStatus)}`
               : 'Pedidos com Entregador'
           }
           button={{

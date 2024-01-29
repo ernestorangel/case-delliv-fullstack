@@ -64,6 +64,8 @@ module.exports = {
       const query = sql.store.getRoutes(storeId);
       const routes = data.groupOrdersByRoute(await db.runQuery(query));
 
+      console.log(routes);
+
       res.send(routes);
     },
     getOpenOrders: async (req, res) => {
@@ -159,7 +161,7 @@ module.exports = {
       const { routeId } = req.params;
 
       const query = sql.route.getStoreSocket(routeId);
-      const storeSocketId = await db.runQuery(query)[0];
+      const storeSocketId = await db.runQuery(query);
 
       res.send(storeSocketId);
     },
@@ -167,7 +169,7 @@ module.exports = {
       const { routeId } = req.params;
 
       const query = sql.route.getDeliveryPersonSocket(routeId);
-      const deliveryPersonSocketId = await db.runQuery(query)[0];
+      const deliveryPersonSocketId = await db.runQuery(query);
 
       res.send(deliveryPersonSocketId);
     },

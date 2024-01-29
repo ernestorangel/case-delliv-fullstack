@@ -2,7 +2,7 @@ import React from 'react';
 
 import '../styles/Toast.css';
 
-function Toast({ type, message, clear }) {
+function Toast({ type, message, clearToast }) {
   const [display, setDisplay] = React.useState(false);
 
   React.useEffect(() => {
@@ -10,7 +10,7 @@ function Toast({ type, message, clear }) {
       setDisplay(true);
       setTimeout(() => {
         setDisplay(false);
-        clear();
+        clearToast();
       }, 5000);
     }
   }, [type, message]);

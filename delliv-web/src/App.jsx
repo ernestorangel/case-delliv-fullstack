@@ -134,6 +134,14 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
     }
   }, [store]);
 
+  React.useEffect(() => {
+    if (Object.keys(selectedRoute).length) {
+      setSelectedRoute(
+        [...routes.filter((route) => route.routeId == selectedRoute.routeId)][0]
+      );
+    }
+  }, [routes]);
+
   const onRequestDeliveryPerson = () => {
     socket.emit('request-delivery-person', store.id, async (message) => {
       console.log(message);
@@ -176,6 +184,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
           )[0]
         );
         setOpenOrders(res.data.openOrders);
+        setSelectedOpenOrders([]);
       });
   };
 
@@ -236,11 +245,6 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
   };
 
   const onAddOrdersToRoute = () => {
-    console.log('routes: ', routes);
-    console.log('selectedRoute: ', selectedRoute);
-    console.log('openOrders: ', openOrders);
-    console.log('selectedOpenOrders: ', selectedOpenOrders);
-
     setOpenOrders([
       ...openOrders.filter(
         (order) => !selectedOpenOrders.find((uuid) => order.uuid == uuid)
@@ -251,18 +255,24 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
       ...routes.map((route) => {
         if (route.routeId == selectedRoute.routeId) {
           route.orders.push(
-            openOrders.filter((order) =>
+            ...openOrders.filter((order) =>
               selectedOpenOrders.find((uuid) => order.uuid == uuid)
             )
           );
-          return route;
         }
+        return route;
       }),
     ]);
   };
 
   const onSelectDeliveryPerson = (e, route) => {
-    setSelectedRoute(route);
+    if (selectedOpenOrders.length)
+      showToast(
+        'error',
+        'Finalize a atribuição de pedidos para o entregador atual para selecionar outro.',
+        clearToast
+      );
+    else setSelectedRoute(route);
   };
 
   const onAddItemCount = (id, addBy) => {
@@ -285,7 +295,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
           setStore(res.data);
         })
         .catch((err) => {
-          showToast('error', err.response.data);
+          showToast('error', err.response.data, clearToast);
         });
     };
 
@@ -294,7 +304,7 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
         <Toast
           type={toastType}
           message={toastMessage}
-          clear={clearToast}
+          clearToast={clearToast}
         ></Toast>
         <Login onLogin={onLogin}></Login>
       </>
@@ -303,7 +313,11 @@ function App({ serverApiAddress, serverSocketAddress, clientType }) {
 
   return (
     <>
-      <Toast type={toastType} message={toastMessage}></Toast>
+      <Toast
+        type={toastType}
+        message={toastMessage}
+        clearToast={clearToast}
+      ></Toast>
       <AppBar store={store}></AppBar>
       <AppContent
         routes={routes}
